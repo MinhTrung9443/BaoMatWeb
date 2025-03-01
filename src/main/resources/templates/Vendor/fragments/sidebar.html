@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style>
+	</style>
+</head>
+
+<body th:fragment="sidebar">
+	<!-- BEGIN SIDEBAR -->
+
+	<div class="page-sidebar navbar-collapse collapse container-fluid">
+
+
+		<ul class="page-sidebar-menu page-sidebar-menu-hover-submenu " data-keep-expanded="false"
+			data-auto-scroll="true" data-slide-speed="200">
+
+			<li>
+				<a th:href="@{/Vendor/products}">
+					<i class="icon-handbag"></i>
+					<span class="title">Quản lý sản phẩm</span>
+					<span class="arrow "></span>
+				</a>
+			</li>
+			<li>
+				<a href="/Vendor/orders">
+					<i class="icon-basket"></i>
+					<span class="title">Quản lý đơn hàng</span>
+				</a>
+			</li>
+
+			<li class="last ">
+				<a href="#">
+					<i class="icon-bar-chart"></i>
+					<span class="title">Quản lý doanh thu</span>
+					<span class="arrow "></span>
+				</a>
+				<ul class="sub-menu">
+					<li>
+						<a href="/revenue">
+							Theo Thể Loại</a>
+					</li>
+					<li>
+						<a href="/revenue-chart">
+							Theo Trạng Thái</a>
+					</li>
+					<li>
+						<a href="/revenue-by-month">
+							Theo Thời Gian</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a th:href="@{/Vendor/chat}">
+					<i class="icon-speech"></i>
+					<span class="title">Chat với khách hàng</span>
+					<span class="arrow "></span>
+				</a>
+			</li>
+
+		</ul>
+		<!-- END SIDEBAR MENU -->
+	</div>
+	<!-- END SIDEBAR -->
+</body>
+
+</html>

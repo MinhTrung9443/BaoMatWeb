@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https//www.thymeleaf.org/thymeleaf-extra-springsecurity6">
+
+
+<!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+	<header th:replace="~{User/fragments/header::header}"></header>
+        <main class="main"> 
+        <div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+        		<div class="container">
+        			<h1 class="page-title">My Account<span>Shop</span></h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/User">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="#">Cửa hàng</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Tài khoản của tôi</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+            	<div class="dashboard">
+	                <div class="container">
+	                	<div class="row">
+	                		<aside class="col-md-4 col-lg-3">
+	                			<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+								    <li class="nav-item">
+								        <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Điều hướng</a>
+								    </li>
+								    <li class="nav-item">
+								        <a href="/User/Order" class="nav-link" id="tab-orders-link" aria-selected="true">Đơn hàng</a>
+								    </li>
+								   
+								    <li class="nav-item">
+								        <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Địa chỉ</a>
+								    </li>
+								    <li class="nav-item">
+								        <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Thông tin tài khoản</a>
+								    </li>
+								</ul>
+	                		</aside><!-- End .col-lg-3 -->
+
+	                		<div class="col-md-8 col-lg-9">
+	                			<div class="tab-content">
+								    <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+								    	<p>Xin chào <span class="font-weight-normal text-dark" th:text="${user.fullname}"></span> (not <span class="font-weight-normal text-dark" th:text="${user.fullname}">User</span>? <a href="#">Đăng xuất</a>) 
+								    	<br>
+								    	Tại thanh điều hướng này, bạn có thể xem <a href="#tab-orders" class="tab-trigger-link link-underline">các đơn hàng</a>, Quản lý <a href="#tab-address" class="tab-trigger-link">Địa chỉ cá nhân</a>, and <a href="#tab-account" class="tab-trigger-link">Thay đổi mật khẩu và các thông tin cá nhân khác</a>.</p>
+								    </div><!-- .End .tab-pane -->
+		
+								    <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+								    	<p>Địa chỉ dưới đây được sử dụng khi mua hàng.</p>
+
+										<div class="row">
+											<!-- Trong phần hiển thị danh sách địa chỉ -->
+											<div class="col-lg-6"
+											     th:if="${user.address != null and user.address.size() > 0}"
+											     th:each="add : ${user.address}">
+											    <div class="card card-dashboard">
+											        <div class="card-body">
+											            <input type="text" th:id="'addressId-' + ${add.addressId}" hidden="hidden" th:value="${add.addressId}">
+											            
+											            <label>Loại địa chỉ (Nhà/trọ/cơ quan)</label>
+											            <br>
+											            <input type="text" th:id="'addressType-' + ${add.addressId}" class="card-title" th:value="${add.addressType}" disabled="disabled" />
+											            
+											            <label>Địa chỉ chi tiết:</label>
+											            <br>
+											            <input type="text" th:id="'addressDetail-' + ${add.addressId}" th:value="${add.addressDetail}" disabled="disabled" />
+											            
+											           <a href="#" 
+													   th:id="'editLink-' + ${add.addressId}" 
+													   th:onclick="'enableEdit(' + ${add.addressId} + ')'">Sửa <i class="icon-edit"></i></a>
+													   
+													   <a href="#" 
+													   th:id="'deleteLink' + ${add.addressId}" 
+													   th:onclick="'deleteLink(' + ${add.addressId} + ')'">Xóa <i class="icon-edit"></i></a>
+											            <!-- Nút OK, chỉ hiển thị khi chỉnh sửa -->
+											            <button 
+														    th:id="'okButton-' + ${add.addressId}" 
+														    th:style="'display: none;'" 
+														    th:onclick="'saveChanges(' + ${add.addressId} + ')'" >
+														    OK
+														</button>
+											        </div>
+											    </div>
+											</div>
+
+											<!-- End .col-lg-6 -->
+											<div id="newAddressForm" style="display: none;"  class="col-lg-6">
+												<div class="card card-dashboard">
+												    <div class="card-body">
+												    <label>Thêm địa chỉ mới</label> <br>
+												    	<input type="text" id="newAddressType" placeholder="Nhập loại địa chỉ" />
+													    <input type="text" id="newAddressDetail" placeholder="Nhập chi tiết địa chỉ" />
+													    <button id="saveButton" th:onclick="AddNewAddress()">OK</button>
+													    <button id="cancelButton">Hủy</button>
+												    </div>
+												</div>
+												<!-- End .card-dashboard -->
+											</div>
+											<!-- End .col-lg-6 -->
+										</div>
+										<!-- End .row -->
+										<div>
+											<button id="addButton" class="btn btn-outline-primary-2"><span>Thêm
+													địa chỉ</span><i class="icon-long-arrow-right"></i></button>
+										</div>
+									</div><!-- .End .tab-pane -->
+
+								    <div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+								    	<form action="/User/editProfile" th:object="${user}" method="post">
+								    	<label th:if="${ErrUpdateProfile}" th:text="${ErrUpdateProfile}" style="color: red"></label>
+								    	<input type="text" class="form-control" name="id" th:field="*{id}" hidden="hidden" required>
+			                				<label>Họ tên *</label>
+		            						<input type="text" class="form-control" name="fullname" th:field="*{fullname}" required>
+
+			                				<label>Số điện thoại *</label>
+		            						<input type="text" class="form-control" name="phone" th:field="*{phone}" required>
+
+		            						<label>Giới tính *</label>
+		            						<select class="form-control" name="gender" th:field="*{gender}" required> 
+		            							<option value="1">Nam</option>
+		            							<option value="0">Nữ</option>
+		            						</select>
+		            					
+		                					<label>Email *</label>
+		        							<input type="email" class="form-control" th:field="*{email}" required>
+		                					<button type="submit" class="btn btn-outline-primary-2">
+			                					<span>Lưu</span>
+			            						<i class="icon-long-arrow-right"></i>
+			                				</button>
+			                			</form>
+								    </div><!-- .End .tab-pane -->
+								</div>
+	                		</div><!-- End .col-lg-9 -->
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .dashboard -->
+            </div><!-- End .page-content -->
+
+        </main>
+        	
+
+	<footer th:replace="~{User/fragments/footer::footer}"></footer>
+	</div>
+
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+<script>
+//Hàm bật chế độ chỉnh sửa cho một địa chỉ
+function enableEdit(addressId) {
+    // Bật chỉnh sửa cho các trường input
+    document.getElementById('addressType-' + addressId).disabled = false;
+    document.getElementById('addressDetail-' + addressId).disabled = false;
+
+    // Hiển thị nút OK
+    document.getElementById('okButton-' + addressId).style.display = 'inline-block';
+
+    // Ẩn liên kết Edit
+    document.getElementById('editLink-' + addressId).style.display = 'none';
+}
+//Hàm xóa địa chỉ
+function deleteLink(addressId) {
+	// Gửi dữ liệu đến server thông qua AJAX
+    $.ajax({
+        url: '/User/Address/delete',
+        type: 'POST',
+        data: {
+            addressId: addressId,
+        },
+        success: function (response) {
+            alert('Xóa thành công thành công!');
+            window.location.href = '/User/dashboard';
+        },
+        error: function () {
+            alert('Có lỗi xảy ra!');
+        }
+    });
+}
+// Hàm lưu thay đổi cho một địa chỉ
+function saveChanges(addressId) {
+    // Lấy giá trị từ các trường input
+    var addressType = document.getElementById('addressType-' + addressId).value;
+    var addressDetail = document.getElementById('addressDetail-' + addressId).value;
+
+    // Gửi dữ liệu đến server thông qua AJAX
+    $.ajax({
+        url: '/User/Address/edit',
+        type: 'POST',
+        data: {
+            addressId: addressId,
+            addressType: addressType,
+            addressDetail: addressDetail
+        },
+        success: function (response) {
+            alert('Cập nhật thành công!');
+            // Disable các trường input sau khi cập nhật
+            document.getElementById('addressType-' + addressId).disabled = true;
+            document.getElementById('addressDetail-' + addressId).disabled = true;
+
+            // Ẩn nút OK
+            document.getElementById('okButton-' + addressId).style.display = 'none';
+
+            // Hiển thị lại liên kết Edit
+            document.getElementById('editLink-' + addressId).style.display = 'inline-block';
+            window.location.href = '/User/dashboard';
+        },
+        error: function () {
+            alert('Có lỗi xảy ra!');
+        }
+    });
+}
+
+    
+ // Lắng nghe sự kiện click vào addButton
+    document.getElementById('addButton').addEventListener('click', function(e) {
+        e.preventDefault(); // Ngừng chuyển hướng mặc định của liên kết
+
+        document.getElementById('newAddressForm').style.display = 'block';
+
+    });
+ 
+    document.getElementById('cancelButton').addEventListener('click', function(e) {
+        e.preventDefault(); // Ngừng chuyển hướng mặc định của liên kết
+
+        document.getElementById('newAddressForm').style.display = 'none';
+     // Reset giá trị các input
+        document.getElementById('newAddressType').value = '';
+        document.getElementById('newAddressDetail').value = '';
+    });
+    document.getElementById('saveButton').addEventListener('click', function () {
+        // Lấy giá trị từ các trường input
+        var addressType = document.getElementById('newAddressType').value;
+        var addressDetail = document.getElementById('newAddressDetail').value;
+
+        // Kiểm tra xem các trường có được nhập đầy đủ không
+        if (!addressType || !addressDetail) {
+            alert('Vui lòng điền đầy đủ thông tin!');
+            return;
+        }
+
+        // Thực hiện lưu dữ liệu (gửi dữ liệu đến server thông qua AJAX)
+        $.ajax({
+            url: '/User/Address/add', // URL để xử lý yêu cầu
+            type: 'POST',
+            data: {
+                newAddressType: addressType,
+                newAddressDetail: addressDetail
+            },
+            success: function (response) {
+                alert('Địa chỉ đã được thêm thành công!'); // Hiển thị thông báo thành công
+
+                // Reset các trường input
+                document.getElementById('newAddressType').value = '';
+                document.getElementById('newAddressDetail').value = '';
+
+                // Ẩn form thêm địa chỉ
+                $('#newAddressForm').hide();
+                window.location.href = '/User/dashboard';
+            },
+            error: function () {
+                alert('Có lỗi xảy ra, mời đăng nhập lại.');
+            }
+        });
+    });
+    
+    
+
+</script>
+
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+</body>
+
+</html>

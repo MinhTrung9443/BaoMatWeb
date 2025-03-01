@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/Shipper/index.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê vận chuyển</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="content">
+<h1><strong>Thống kê số đơn hàng đã giao thành công theo thời gian</strong></h1>
+
+
+        <!-- Biểu đồ thống kê -->
+        <div class="chart-container">
+            <canvas id="barChart"></canvas>
+        </div>
+
+       
+            <script th:inline="javascript">
+    var completedOrdersByMonth = /*[[${jsonCompletedOrdersByMonth}]]*/ '{}';
+    console.log("Dữ liệu JSON nhận được:", completedOrdersByMonth);
+</script>
+
+ <script>
+            try {
+                // Parse JSON nếu không bị lỗi
+                completedOrdersByMonth = JSON.parse(completedOrdersByMonth);
+            } catch (e) {
+                console.error("Không thể parse JSON từ Controller:", e);
+                completedOrdersByMonth = {};
+            }
+
+            // Lấy labels và data từ completedOrdersByMonth
+            var labels = Object.keys(completedOrdersByMonth); // Lấy các tháng
+            var data = Object.values(completedOrdersByMonth); // Số đơn hàng hoàn thành trong mỗi tháng
+
+            console.log("Labels:", labels);
+            console.log("Data:", data);
+
+            // Vẽ biểu đồ
+            var ctx = document.getElementById('barChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels, // Các tháng
+                    datasets: [{
+                        label: 'Số đơn hàng hoàn thành',
+                        data: data, // Dữ liệu số đơn hàng
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.raw + ' đơn hàng';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1, // Hiển thị từng bước nhảy 1
+                                callback: function(value) {
+                                    if (Number.isInteger(value)) {
+                                        return value; // Chỉ hiển thị số nguyên
+                                    }
+                                    return null; // Bỏ qua số không nguyên
+                                }}
+                        }
+                    }
+                }
+            });console.log("Dữ liệu JSON từ Thymeleaf:", completedOrdersByMonth);
+
+        </script>
+    </div>
+</body>
+</html>

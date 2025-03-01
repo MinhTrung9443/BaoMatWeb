@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https//www.thymeleaf.org/thymeleaf-extra-springsecurity6">
+
+
+<!-- molla/wishlist.html  22 Nov 2019 09:55:05 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+ <header th:replace="~{User/fragments/header::header}"></header>
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+        		<div class="container">
+        			<h1 class="page-title">Sản phẩm yêu thích</h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="#">Cửa hàng</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Yêu thích</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+            	<div class="container">
+					<table class="table table-wishlist table-mobile">
+						<thead>
+							<tr>
+								<th>Sản phẩm</th>
+								<th>Giá</th>
+								<th>Tình trạng</th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr th:if="${listProduct}" th:each="favou : ${listProduct}">
+								<td class="product-col">
+									<div class="product">
+										<figure class="product-media">
+											<a th:href="'/User/productDetail/' + ${favou.product.productId}">
+												<img th:if="${#strings.startsWith(favou.product.images[0].imageUrl, 'http')}"
+										th:src="${favou.product.images[0].imageUrl}" class="product-image"
+										alt="Ảnh sản phẩm">
+
+									<!-- Nếu không phải URL, giả sử là file trên server -->
+									<img th:if="${!#strings.startsWith(favou.product.images[0].imageUrl, 'http')}"
+										th:src="@{'/api/images?imageName=' + ${favou.product.images[0].imageUrl}}"
+										class="product-image" 
+										alt="Ảnh sản phẩm">
+											</a>
+										</figure>
+
+										<h3 class="product-title">
+											<a th:href="'/User/productDetail/' + ${favou.product.productId}" th:text="${favou.product.productName}">Blue utility pinafore denim dress</a>
+										</h3><!-- End .product-title -->
+									</div><!-- End .product -->
+								</td>
+								<td class="price-col" th:text="${favou.product.price} + 'đ'">$76.00</td>
+								<td class="stock-col" th:text="${favou.product.stock > 0 ? 'Còn hàng' : 'Hết hàng'}"><span class="in-stock">In stock</span></td>
+								<td class="action-col">
+								<form th:action="@{/User/add-to-cart}" method="post">
+										<input type="hidden" name="productId" th:value="${favou.product.productId}" />
+										<input type="hidden" name="quantity" th:value="1" />
+										<button th:disabled="${favou.product.stock == 0}" type="submit" class="btn btn-block btn-outline-primary-2">Thêm vào giỏ hàng</button>
+									</form>
+									
+								</td>
+								<td class="remove-col"><button th:onclick="'removeLove(' + ${favou.product.productId} + ')'" class="btn-remove"><i class="icon-close"></i></button></td>
+							</tr>
+						
+						</tbody>
+					</table><!-- End .table table-wishlist -->
+					<nav class="custom-pagination" aria-label="Page navigation example"
+						style="display: flex; justify-content: center; margin-top: 20px;"
+						th:if="${currentPage}">
+						<ul class="pagination">
+							<!-- Nút "Previous" -->
+							<li class="page-item"
+								th:classappend="${currentPage == 1} ? 'disabled'"><a
+								class="page-link"
+								th:href="${currentPage > 1} ? @{'?pageNo=' + ${currentPage-1}} : '#'"
+								aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+							</a></li>
+
+							<!-- Hiển thị các số trang -->
+							<li class="page-item" th:if="${currentPage > 3}"><a
+								class="page-link" th:href="@{'?pageNo=' + 1}">1</a></li>
+							<li class="page-item disabled" th:if="${currentPage > 4}"><a
+								class="page-link">...</a></li>
+
+							<!-- Hiển thị trang trước, trang hiện tại và trang tiếp theo -->
+							<li class="page-item"
+								th:each="i : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+								th:if="${i >= 1 and i <= totalPages}"
+								th:classappend="${i == currentPage} ? 'active'"><a
+								class="page-link" th:href="@{'?pageNo=' + ${i}}"
+								th:text="${i}"></a></li>
+
+							<li class="page-item disabled"
+								th:if="${currentPage < totalPages - 3}"><a
+								class="page-link">...</a></li>
+							<li class="page-item" th:if="${currentPage < totalPages - 2}">
+								<a class="page-link"
+								th:href="@{'?pageNo=' + ${totalPages}}"
+								th:text="${totalPages}"></a>
+							</li>
+
+							<!-- Nút "Next" -->
+							<li class="page-item"
+								th:classappend="${currentPage == totalPages} ? 'disabled'">
+								<a class="page-link"
+								th:href="${currentPage < totalPages} ? @{'?pageNo=' + ${currentPage+1}} : '#'"
+								aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+							</a>
+							</li>
+						</ul>
+					</nav>
+
+
+
+					<div class="wishlist-share">
+	            		<div class="social-icons social-icons-sm mb-2">
+	            			<label class="social-label">Share on:</label>
+	    					<a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+	    					<a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+	    					<a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+	    					<a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+	    					<a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+	    				</div><!-- End .soial-icons -->
+	            	</div><!-- End .wishlist-share -->
+            	</div><!-- End .container -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+<footer th:replace="~{User/fragments/footer::footer}"></footer>
+
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Plugins JS File -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+    
+   <script >
+//Hàm lưu thay đổi cho một địa chỉ
+function removeLove(productId) {
+
+
+    // Gửi dữ liệu đến server thông qua AJAX
+    $.ajax({
+        url: '/User/removelove',
+        type: 'POST',
+        data: {
+        	productId: productId,
+        },
+        success: function (response) {
+            alert(response);
+            window.location.href = '/User/wishlist'; 
+        },
+        error: function (response) {
+            alert(response);
+        }
+    });
+}
+</script> 
+    
+</body>
+
+
+<!-- molla/wishlist.html  22 Nov 2019 09:55:06 GMT -->
+</html>

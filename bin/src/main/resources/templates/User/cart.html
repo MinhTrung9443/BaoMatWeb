@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https//www.thymeleaf.org/thymeleaf-extra-springsecurity6">
+
+
+<!-- molla/cart.html  22 Nov 2019 09:55:06 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+<header th:replace="~{User/fragments/header::header}"></header>
+
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+        		<div class="container">
+        			<h1 class="page-title">Giỏ hàng<span>Cửa hàng</span></h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="#">Cửa hàng</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+			<form action="/User/checkout" method="post">
+			<input type="text" name="shoppingCartId" th:if="${listCart.size() > 0}" th:value="${listCart[0].cart.shoppingCartId}" hidden="hidden">
+            <div class="page-content">
+            	<div class="cart">
+	                <div class="container">
+	                	<div class="row">
+	                		<div class="col-lg-9">
+	                			<table class="table table-cart table-mobile">
+									<thead>
+										<tr>
+											<th>Sản phẩm</th>
+											<th>Giá</th>
+											<th>Số lượng</th>
+											<th>Tổng tiền</th>
+											<th></th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr th:each="cartItem : ${listCart}">
+											<td class="product-col">
+												<div class="product">
+													<figure class="product-media">
+														<a th:href="'/User/productDetail/' + ${cartItem.product.productId}">
+															<img th:src="${cartItem.product.images[0].imageUrl}" alt="Product image">
+														</a>
+													</figure>
+
+													<h3 class="product-title">
+														<a th:href="'/User/productDetail/' + ${cartItem.product.productId}" th:text="${cartItem.product.productName}">Beige knitted elastic runner shoes</a>
+													</h3><!-- End .product-title -->
+												</div><!-- End .product -->
+											</td>
+											<td class="price-col" th:text="${cartItem.product.price} + ' đ'">$84.00</td>
+											<td class="quantity-col">
+                                                <div class="cart-product-quantity">
+                                                    <input type="number" class="form-control inputquantity"  th:data-cart-item-id="${cartItem.cartItemId}" th:value="${cartItem.quantity}" value="1" min="0"  step="1" data-decimals="0" required>
+                                                </div><!-- End .cart-product-quantity -->
+                                            </td>
+											<td class="total-col" id="pricePerProduct" th:text="${cartItem.product.price * cartItem.quantity}">$84.00</td>
+											<td class="remove-col"><button class="btn-remove" th:onclick="'removeItem(' + ${cartItem.cartItemId} + ')'"><i class="icon-close"></i></button></td>
+										</tr>
+
+									</tbody>
+								</table><!-- End .table table-wishlist -->
+
+	                		</div><!-- End .col-lg-9 -->
+	                		<aside class="col-lg-3">
+	                			<div class="summary summary-cart">
+	                				<h3 class="summary-title">Giỏ hàng</h3><!-- End .summary-title -->
+
+	                				<table class="table table-summary">
+	                					<tbody>
+	                						<tr class="summary-subtotal">
+	                							<td>Tổng tiền hàng:</td>
+	                							<td id = "totalCart">$160.00</td>
+	                						</tr><!-- End .summary-subtotal -->
+   	                					</tbody>
+	                				</table><!-- End .table table-summary -->
+
+	                				<button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">Mua Hàng</button>
+	                			</div><!-- End .summary -->
+								
+		            			<a href="/User" class="btn btn-outline-dark-2 btn-block mb-3"><span>Tiếp tục mua sắm</span><i class="icon-refresh"></i></a>
+	                		</aside><!-- End .col-lg-3 -->
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .cart -->
+            </div><!-- End .page-content -->
+         </form>
+        </main><!-- End .main -->
+       
+<footer th:replace="~{User/fragments/footer::footer}"></footer>
+
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Plugins JS File -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/bootstrap-input-spinner.js"></script>
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+    
+ <script>
+ function removeItem(cartItemId) {
+	    $.ajax({
+	        url: '/User/remove-item',  
+	        type: 'POST',
+	        data: {cartItemId: cartItemId},  
+	        success: function (response) {
+	            window.location.href = '/User/cart'; 
+	        },
+	        error: function () {
+	            showToast("Có lỗi xảy ra"); 
+	        }
+	    });
+	}
+//Function to update total price in the cart
+ function updateTotal() {
+    let total = 0;
+
+    // Loop through each cart item and calculate total price
+    document.querySelectorAll('.inputquantity').forEach(input => {
+        const quantity = parseInt(input.value, 10); // Get the quantity
+        const price = parseFloat(input.closest('tr').querySelector('.price-col').textContent.replace(' đ', '').trim()); // Get the price
+
+        // If quantity is 0, remove the item from the cart
+        if (quantity === 0) {
+            const cartItemId = input.getAttribute('data-cart-item-id');
+            removeItem(cartItemId); // Call removeItem function to remove the item
+        } else {
+            total += price * quantity; // Add the total for each item
+        }
+        const tt = price * quantity;
+        document.getElementById('pricePerProduct').textContent = tt.toFixed(0) + ' đ';
+    });
+
+    // Update the subtotal and total in the summary
+    document.getElementById('totalCart').textContent = total.toFixed(0) + ' đ';
+}
+
+//Event listener for quantity changes
+ document.querySelectorAll('.inputquantity').forEach(input => {
+     input.addEventListener('change', function () {
+         const cartItemId = input.getAttribute('data-cart-item-id');
+         const quantity = input.value;
+
+         // Update quantity via AJAX
+         $.ajax({
+             url: '/User/update-quantity', // URL to handle the update request
+             type: 'POST',
+             data: {cartItemId: cartItemId, quantity: quantity},
+             success: function (response) {
+            	 alert(response); 
+            	 updateTotal();
+            	 window.location.href = '/User/cart'; 
+             },
+             error: function (response) {
+                 alert(response);
+                 window.location.href = '/User/cart'; 
+             }
+         });
+     });
+ });
+//Initial total calculation on page load
+ document.addEventListener('DOMContentLoaded', function () {
+     updateTotal();
+ });
+ </script>
+</body>
+</html>

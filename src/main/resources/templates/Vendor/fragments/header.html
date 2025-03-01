@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https//www.thymeleaf.org/thymeleaf-extra-springsecurity6">
+<head>
+	<meta charset="UTF-8">
+	<title>ONESHOP</title>
+
+</head>
+
+<body th:fragment="header">
+
+	<div class="page-header navbar navbar-fixed-top">
+		<!-- BEGIN HEADER INNER -->
+		<div class="page-header-inner container-fluid">
+			<div class="page-logo">
+				<a href="index.html"> <img
+					src="/assets/admin/layout2/img/logo-default.png" alt="logo"
+					class="logo-default" />
+				</a>
+				<div class="menu-toggler sidebar-toggler">
+					<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+				</div>
+			</div>
+			<a href="javascript:;" class="menu-toggler responsive-toggler"
+				data-toggle="collapse" data-target=".navbar-collapse"> </a>
+			<div class="page-actions hide"></div>
+			<div class="page-top">
+				<div class="top-menu">
+					<ul class="nav navbar-nav pull-right">
+						<li class="dropdown dropdown-user"><a href="#"
+							class="dropdown-toggle" data-toggle="dropdown"
+							data-hover="dropdown" data-close-others="true"> <img alt=""
+								class="img-circle"
+								src="../../assets/admin/layout2/img/avatar3_small.jpg" /> <span
+								class="username username-hide-on-mobile" th:text="Staff"> Nick </span> <i
+								class="fa fa-angle-down"></i>
+						</a>
+							<ul class="dropdown-menu dropdown-menu-default">
+								<li><a href="/logout"> <i class="icon-key"></i>Đăng
+										xuất
+								</a></li>
+							</ul></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

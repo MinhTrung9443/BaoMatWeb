@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/Shipper/index.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách đơn hàng của tôi</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+</head>
+<body>
+<div layout:fragment="content" class="container my-4">
+    <div class="container my-4">
+        <h1 class="text-center text-primary bold">Danh sách đơn hàng của tôi</h1>
+        <hr>
+    </div>
+    <table class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Mã đơn hàng</th>
+            <th>Ngày đặt</th>
+            <th>Địa chỉ giao hàng</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="order : ${confirmedOrders}">
+            <td th:text="${order.orderId}">Mã đơn</td>
+            <td th:text="${order.orderDate}">Ngày đặt</td>
+            <td th:text="${order.shippingAddress}">Địa chỉ</td>
+            <td th:text="${order.orderStatus}">Trạng thái</td>
+            <td>
+    <form th:action="@{/Shipper/order/{orderId}/updateStatus(orderId=${order.orderId})}" method="post">
+        <input type="hidden" name="status" value="COMPLETED" />
+        <button type="submit" th:if="${order.orderStatus.name() == 'SHIPPING'}" class="btn btn-primary">Xác nhận giao thành công</button>
+    </form>
+</td>
+
+        </tr>
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{/Shipper/delivered(page=${currentPage - 1}, size=5)}">Previous</a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link" th:href="@{/Shipper/delivered(page=${i}, size=5)}" th:text="${i + 1}"></a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+            <a class="page-link" th:href="@{/Shipper/delivered(page=${currentPage + 1}, size=5)}">Next</a>
+        </li>
+    </ul>
+</nav>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

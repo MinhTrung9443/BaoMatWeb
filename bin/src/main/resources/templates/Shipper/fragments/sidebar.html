@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+</style>
+</head>
+<body th:fragment="sidebar">
+		<!-- BEGIN SIDEBAR -->
+			
+			<div class="page-sidebar navbar-collapse collapse container-fluid">
+
+
+				<ul class="page-sidebar-menu page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+					<li class="last ">
+						<a href="#">
+						<i class="icon-bag"></i>
+						<span class="title">Quản lý đơn hàng</span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<li>
+								<a href="/Shipper/delivered">
+								Đơn hàng của tôi</a>
+							</li>
+							<li>
+								<a href="/Shipper1">
+								Đơn hàng</a>
+							</li>
+						</ul>
+					</li>
+
+					<li class="last ">
+						<a href="#">
+						<i class="icon-bar-chart"></i>
+						<span class="title">Quản lý thống kê</</span>
+						<span class="arrow "></span>
+						</a>
+						<ul class="sub-menu">
+							<li>
+								<a href="/Shipper/statistics">
+								Theo phần trăm</a>
+							</li>
+							<li>
+								<a href="/Shipper/statistics1">
+								Theo thời gian</a>
+							</li>
+						</ul>
+					</li>
+					
+				</ul>
+				<!-- END SIDEBAR MENU -->
+			</div>
+		<!-- END SIDEBAR -->
+		</body>
+		</html>

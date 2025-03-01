@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Molla - Bootstrap eCommerce Template</title>
+	<meta name="keywords" content="HTML5 Template">
+	<meta name="description" content="Molla - Bootstrap eCommerce Template">
+	<meta name="author" content="p-themes">
+	<!-- Favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+	<link rel="manifest" href="assets/images/icons/site.html">
+	<link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
+	<link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+	<meta name="apple-mobile-web-app-title" content="Molla">
+	<meta name="application-name" content="Molla">
+	<meta name="msapplication-TileColor" content="#cc9966">
+	<meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+	<!-- Plugins CSS File -->
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
+	<link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
+	<link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
+	<!-- Main CSS File -->
+	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="assets/css/skins/skin-demo-2.css">
+	<link rel="stylesheet" href="assets/css/demos/demo-2.css">
+</head>
+
+<body>
+	<style>
+		/* Custom Styles */
+		body {
+			font-family: 'Roboto', sans-serif;
+			background-color: #f4f7fa;
+		}
+
+		.container {
+			display: flex;
+			width: 100%;
+			/* Chiếm hết chiều rộng màn hình */
+		}
+
+		.sidebar {
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			width: 250px;
+			/* Giảm chiều rộng */
+		}
+
+		.sidebar h3 {
+			font-size: 1.5rem;
+			font-weight: 600;
+			margin-bottom: 20px;
+		}
+
+		.sidebar select,
+		.sidebar input {
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 15px;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+		}
+
+		.sidebar button {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 8px;
+			width: 50%;
+			cursor: pointer;
+		}
+
+		.sidebar button:hover {
+			background-color: #0056b3;
+		}
+
+		.product {
+			border: 1px solid #ddd;
+			border-radius: 10px;
+			overflow: hidden;
+			margin-bottom: 50px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+			flex-grow: 1;
+			/* Đảm bảo sản phẩm chiếm phần còn lại của không gian */
+			padding: 20px;
+			/* Thêm padding để tạo không gian xung quanh nội dung */
+			box-sizing: border-box;
+			/* Đảm bảo padding không làm thay đổi chiều rộng */
+		}
+
+		.product-action {
+			display: flex;
+			flex-direction: column;
+			/* Sắp xếp các nút theo chiều dọc */
+			gap: 10px;
+			/* Khoảng cách giữa các nút */
+		}
+
+		.btn-product {
+			display: inline-block;
+			padding: 10px 20px;
+			font-size: 1rem;
+			text-align: center;
+			border-radius: 5px;
+			text-decoration: none;
+			transition: background-color 0.3s ease;
+		}
+
+
+		.product img {
+			width: 100%;
+			height: 250px;
+			object-fit: cover;
+		}
+
+		.product-details {
+			padding: 15px;
+			text-align: center;
+		}
+
+		.product h3 {
+			font-size: 1.2rem;
+			font-weight: 600;
+			margin-bottom: 10px;
+		}
+
+		.product p {
+			color: #28a745;
+			font-size: 1.1rem;
+			margin-bottom: 15px;
+		}
+
+		.product .btn-primary {
+			background-color: #007bff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+		}
+
+		.product .btn-primary:hover {
+			background-color: #0056b3;
+		}
+
+		.main-content {
+			display: flex;
+			justify-content: space-between;
+			padding: 30px;
+		}
+
+		.product-list {
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		.product-list .col {
+			width: 23%;
+			margin-right: 2%;
+			margin-bottom: 20px;
+		}
+
+		.product-list .col:nth-child(4n) {
+			margin-right: 0;
+		}
+
+		.pagination-container {
+			display: flex;
+			justify-content: right;
+			margin-top: 20px;
+			/* Thêm khoảng cách phía trên nếu cần */
+			flex-grow: 1;
+			padding: 20px;
+		}
+
+		.pagination {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			/* Khoảng cách giữa các liên kết phân trang */
+		}
+
+
+
+		.pagination a:hover {
+			text-decoration: underline;
+		}
+
+		.pagination span {
+			font-weight: bold;
+		}
+
+
+		footer {
+			background-color: #333;
+			color: white;
+			padding: 20px 0;
+			text-align: center;
+		}
+
+		footer a {
+			color: #fff;
+			text-decoration: none;
+			margin: 0 10px;
+		}
+
+		footer a:hover {
+			text-decoration: underline;
+		}
+	</style>
+	<div class="page-wrapper">
+		<header th:replace="~{Guest/fragments/header::header}"></header>
+
+		<main class="main">
+			<div class="container">
+				<form action="/search" method="get">
+					<div class="sidebar">
+						<h3>Bộ Lọc Tìm Kiếm</h3>
+
+						<!-- Bộ lọc giá -->
+						<label for="minPrice">Giá tối thiểu:</label>
+						<input type="number" id="minPrice" name="minPrice" th:value="${minPrice}" min="0"><br>
+						<br>
+
+						<label for="maxPrice">Giá tối đa:</label>
+						<input type="number" id="maxPrice" name="maxPrice" th:value="${maxPrice}" max="100000000"><br><br>
+
+						<!-- Bộ lọc thương hiệu -->
+						<label for="brand">Thương hiệu:</label>
+						<select name="brand" id="brand">
+							<option value="">All</option>
+							<option value="HUM Nutrition" th:selected="${brand == 'HUM Nutrition'}">HUM Nutrition
+							</option>
+							<option value="WelleCo" th:selected="${brand == 'WelleCo'}">WelleCo</option>
+							<option value="Smile Makers" th:selected="${brand == 'Smile Makers'}">Smile Makers</option>
+							<option value="ESPA" th:selected="${brand == 'ESPA'}">ESPA</option>
+							<option value="ilapothecary" th:selected="${brand == 'ilapothecary'}">ilapothecary</option>
+							<option value="NAYDAYA" th:selected="${brand == 'NAYDAYA'}">NAYDAYA</option>
+							<option value="LELO" th:selected="${brand == 'LELO'}">LELO</option>
+							<option value="Gallinée" th:selected="${brand == 'Gallinée'}">Gallinée</option>
+							<option value="Vida Glow" th:selected="${brand == 'Vida Glow'}">Vida Glow</option>
+							<option value="OSKIA" th:selected="${brand == 'OSKIA'}">OSKIA</option>
+							<option value="Dr Dennis Gross" th:selected="${brand == 'Dr Dennis Gross'}">Dr Dennis Gross
+							</option>
+							<option value="Rejuvenated Ltd" th:selected="${brand == 'Rejuvenated Ltd'}">Rejuvenated Ltd
+							</option>
+							<option value="Vida Glow" th:selected="${brand == 'Vida Glow'}">Vida Glow</option>
+							<option value="The Nue Co." th:selected="${brand == 'The Nue Co.'}">The Nue Co.</option>
+							<option value="Mio Skincare" th:selected="${brand == 'Mio Skincare'}">Mio Skincare</option>
+							<option value="Philip Kingsley" th:selected="${brand == 'Philip Kingsley'}">Philip Kingsley
+							</option>
+							<option value="IT Cosmetics" th:selected="${brand == 'IT Cosmetics'}">IT Cosmetics</option>
+							<option value="Pat McGrath Labs" th:selected="${brand == 'Pat McGrath Labs'}">Pat McGrath
+								Labs</option>
+							<option value="Too Faced" th:selected="${brand == 'Too Faced'}">Too Faced</option>
+						</select><br><br>
+
+						<!-- Bộ lọc xuất xứ -->
+						<label for="origin">Nguồn gốc:</label>
+						<select name="brandOrigin" id="origin">
+							<option value="">All</option>
+							<option value="America" th:selected="${brandOrigin == 'America'}">America</option>
+							<option value="Japanese" th:selected="${brandOrigin == 'Japanese'}">Japanese</option>
+							<option value="England" th:selected="${brandOrigin == 'England'}">England</option>
+							<option value="Korea" th:selected="${brandOrigin == 'Korea'}">Korea</option>
+							<option value="France" th:selected="${brandOrigin == 'France'}">France</option>
+							<option value="Vietnamese" th:selected="${brandOrigin == 'Vietnamese'}">Vietnamese</option>
+							<option value="Chinese" th:selected="${brandOrigin == 'Chinese'}">Chinese</option>
+							<option value="Australia" th:selected="${brandOrigin == 'Australia'}">Australia</option>
+						</select><br><br>
+
+						<!-- Bộ lọc thể loại -->
+						<label for="category_name">Thể loại:</label>
+						<select name="category_name" id="category_name">
+							<option value="">All</option>
+							<option value="Mỹ phẩm" th:selected="${category_name == 'Mỹ phẩm'}">Mỹ phẩm</option>
+							<option value="Chăm sóc da mặt" th:selected="${category_name == 'Chăm sóc da mặt'}">Chăm sóc
+								da mặt</option>
+							<option value="Chăm sóc da dầu" th:selected="${category_name == 'Chăm sóc da dầu'}">Chăm sóc
+								da dầu</option>
+							<option value="Thực Phẩm Chức Năng" th:selected="${category_name == 'Thực Phẩm Chức Năng'}">
+								Thực Phẩm Chức Năng</option>
+							<option value="Trang Điểm" th:selected="${category_name == 'Trang Điểm'}">Trang Điểm
+							</option>
+							<option value="Chăm sóc body" th:selected="${category_name == 'Chăm sóc body'}">Chăm sóc
+								body</option>
+							<option value="Kem" th:selected="${category_name == 'Kem'}">Kem</option>
+							<option value="Serum" th:selected="${category_name == 'Serum'}">Serum</option>
+							<option value="Sữa tắm" th:selected="${category_name == 'Sữa tắm'}">Sữa tắm</option>
+							<option value="Dầu gội" th:selected="${category_name == 'Dầu gội'}">Dầu gội</option>
+							<option value="Bông tẩy trang" th:selected="${category_name == 'Bông tẩy trang'}">Bông tẩy
+								trang</option>
+							<option value="Nước rửa tay" th:selected="${category_name == 'Nước rửa tay'}">Nước rửa tay
+							</option>
+						</select><br><br>
+						<button type="submit">Lọc</button>
+					</div>
+
+				</form>
+				<!-- Hiển thị sản phẩm -->
+				<div class="col-lg-9 col-md-8">
+					<!-- Phân trang -->
+					<div class="pagination">
+						<a th:href="@{/search(page=${currentPage - 1}, size=${size})}"
+							th:if="${currentPage > 0}">&laquo;
+							Previous</a>
+						<span th:text="${currentPage + 1}">1</span> / <span th:text="${totalPages}">1</span>
+						<a th:href="@{/search(page=${currentPage + 1}, size=${size})}"
+							th:if="${currentPage < totalPages - 1}">Next &raquo;</a>
+					</div>
+					<div class="products">
+
+						<div class="row">
+							<!-- Duyệt qua các sản phẩm -->
+							<div th:each="product : ${products}" class="col-lg-4 col-md-4 col-sm-6">
+								<div class="product product-11 text-center">
+									<figure class="product-media">
+										<a th:href="@{/product-details/{productId}(productId=${product.productId})}">
+											<!-- Hình ảnh sản phẩm -->
+											<img th:src="@{${product.images[0].imageUrl}}" alt="Product image"
+												class="product-image">
+
+										</a>
+
+										<div class="product-action-vertical">
+											<a href="#" class="btn-product-icon btn-wishlist">
+												<span>add to wishlist</span>
+											</a>
+										</div><!-- End .product-action-vertical -->
+									</figure><!-- End .product-media -->
+
+									<div class="product-body">
+										<h3 class="product-title">
+											<a th:href="@{/product-details/{productId}(productId=${product.productId})}"
+												th:text="${product.productName}"></a>
+										</h3><!-- End .product-title -->
+										<div class="product-price" th:text="${product.price} + ' VND'">
+											<!-- Hiển thị giá sản phẩm -->
+										</div><!-- End .product-price -->
+									</div><!-- End .product-body -->
+
+									<div class="product-action">
+										<a href="#" class="btn-product btn-cart">
+											<span>Thêm vào giỏ hàng</span>
+										</a>
+										<a th:href="@{/product-details/{productId}(productId=${product.productId})}"
+											class="btn-product btn-buy">
+											<span>Xem chi tiết</span>
+										</a>
+									</div><!-- End .product-action -->
+								</div><!-- End .product -->
+							</div><!-- End .col-lg-3 col-md-4 col-sm-6 -->
+						</div><!-- End .row -->
+					</div><!-- End .products -->
+					<!-- Phân trang -->
+					<div class="pagination">
+						<!-- Liên kết trang trước -->
+						<a th:href="@{/search(page=${currentPage - 1}, size=${size})}"
+							th:if="${currentPage > 0}">&laquo; Previous</a>
+
+						<!-- Hiển thị số trang hiện tại và tổng số trang -->
+						<span th:text="${currentPage + 1}">1</span> / <span th:text="${totalPages}">1</span>
+
+						<!-- Liên kết trang tiếp theo -->
+						<a th:href="@{/search(page=${currentPage + 1}, size=${size})}"
+							th:if="${currentPage < totalPages - 1}">Next &raquo;</a>
+					</div>
+
+				</div><!-- End .col-lg-9 col-md-8 -->
+			</div>
+
+		</main><!-- End .main -->
+		<footer th:replace="~{Guest/fragments/footer::footer}"></footer>
+
+		<!-- Plugins JS File -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/bootstrap.bundle.min.js"></script>
+		<script src="assets/js/jquery.hoverIntent.min.js"></script>
+		<script src="assets/js/jquery.waypoints.min.js"></script>
+		<script src="assets/js/superfish.min.js"></script>
+		<script src="assets/js/owl.carousel.min.js"></script>
+		<script src="assets/js/jquery.plugin.min.js"></script>
+		<script src="assets/js/jquery.magnific-popup.min.js"></script>
+		<script src="assets/js/jquery.countdown.min.js"></script>
+		<!-- Main JS File -->
+		<script src="assets/js/main.js"></script>
+		<script src="assets/js/demos/demo-2.js"></script>
+</body>
+
+</html>

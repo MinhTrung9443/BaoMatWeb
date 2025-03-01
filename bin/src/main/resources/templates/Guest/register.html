@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Đăng Kí</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Molla - Bootstrap eCommerce Template</title>
+	<meta name="keywords" content="HTML5 Template">
+	<meta name="description" content="Molla - Bootstrap eCommerce Template">
+	<meta name="author" content="p-themes">
+	<!-- Favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+	<link rel="manifest" href="assets/images/icons/site.html">
+	<link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
+	<link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+	<meta name="apple-mobile-web-app-title" content="Molla">
+	<meta name="application-name" content="Molla">
+	<meta name="msapplication-TileColor" content="#cc9966">
+	<meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+	<!-- Plugins CSS File -->
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
+	<link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
+	<link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
+	<!-- Main CSS File -->
+	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="assets/css/skins/skin-demo-2.css">
+	<link rel="stylesheet" href="assets/css/demos/demo-2.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background: linear-gradient(120deg, #FF9A9E, #FFFFFF);
+			height: 100vh;
+			margin: 0;
+		}
+
+		.error-message {
+			color: red;
+			font-size: 16px;
+			margin-top: 5px;
+		}
+
+		.register-form {
+			background: #fff;
+			padding: 30px 40px;
+			border-radius: 8px;
+			box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+			width: 100%;
+			max-width: 800px;
+			margin: 50px auto;
+		}
+
+		.register-form h2 {
+			margin-bottom: 20px;
+			font-size: 28px;
+			text-align: center;
+			color: #333;
+		}
+
+		.form-group {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 20px;
+		}
+
+		.form-group label {
+			display: block;
+			margin-bottom: 8px;
+			font-weight: bold;
+			color: #555;
+			width: 100px;
+		}
+
+		.form-group input,
+		.form-group select {
+			width: calc(100% - 120px);
+			padding: 10px;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			font-size: 14px;
+			outline: none;
+			transition: border-color 0.3s ease;
+		}
+
+		.form-group input:focus,
+		.form-group select:focus {
+			border-color: #6c63ff;
+		}
+
+		.register-form button {
+			width: 100%;
+			background-color: #6c63ff;
+			color: white;
+			border: none;
+			padding: 12px;
+			font-size: 16px;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+
+		.register-form button:hover {
+			background-color: #574b90;
+		}
+
+		.register-form .footer-text {
+			margin-top: 15px;
+			font-size: 14px;
+			text-align: center;
+			color: #666;
+		}
+
+		.register-form .footer-text a {
+			color: #6c63ff;
+			text-decoration: none;
+		}
+
+		.register-form .footer-text a:hover {
+			text-decoration: underline;
+		}
+	</style>
+
+</head>
+
+<body>
+	<header th:replace="~{Guest/fragments/header::header}"></header>
+	<div class="register-form">
+		<h2>Đăng Kí</h2>
+		<form th:action="@{/process-register}" method="post">
+			<div th:if="${error != null}" class="error-message" style="color: red;">
+				<p th:text="${error}"></p>
+			</div>
+			<!-- Account Information -->
+			<div th:if="${errorUsername != null}" class="error-message" style="color: red;">
+				<p th:text="${errorUsername}"></p>
+			</div>
+			<div class="form-group">
+				<label for="username">Username:</label>
+				<input type="text" id="username" name="username" required>
+			</div>
+
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" id="password" name="password" required>
+			</div>
+			<div th:if="${errorEmail != null}" class="error-message" style="color: red;">
+				<p th:text="${errorEmail}"></p>
+			</div>
+			<!-- Person Information -->
+			<div class="form-group">
+				<label for="email">Email:</label>
+				<input type="email" id="email" name="email" required>
+			</div>
+
+			<div class="form-group">
+				<label for="fullname">Họ tên:</label>
+				<input type="text" id="fullname" name="fullname" required>
+			</div>
+
+			<div class="form-group">
+				<label for="gender">Giới tính:</label>
+				<select name="gender" id="gender" required>
+					<option value="Male">Nam</option>
+					<option value="Female">Nữ</option>
+				</select>
+			</div>
+			<div th:if="${errorPhone != null}" class="error-message" style="color: red;">
+				<p th:text="${errorPhone}"></p>
+			</div>
+			<div class="form-group">
+				<label for="phone">Số điện thoại:</label>
+				<input type="text" id="phone" name="phone" required>
+			</div>
+
+			<!-- User Information -->
+			<div class="form-group">
+				<label for="birthday">Ngày sinh:</label>
+				<input type="date" id="birthday" name="birthday" required>
+			</div>
+
+			<div class="form-group">
+				<label for="address_detail">Địa chỉ cụ thể:</label>
+				<input type="text" id="address_detail" name="address_detail" required>
+			</div>
+
+			<div class="form-group">
+				<label for="address_type">Loại địa chỉ:</label>
+				<select name="address_type" id="address_type" required>
+					<option value="CoQuan">Cơ quan</option>
+					<option value="NhaRieng">Nhà riêng</option>
+					<option value="CongTy">Công ty</option>
+				</select>
+			</div>
+			<!-- Submit Button -->
+			<button type="submit">Register</button>
+		</form>
+
+	</div>
+	<footer th:replace="~{Guest/fragments/footer::footer}"></footer>
+</body>
+
+</html>

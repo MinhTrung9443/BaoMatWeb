@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https//www.thymeleaf.org/thymeleaf-extra-springsecurity6">
+
+
+<!-- molla/checkout.html  22 Nov 2019 09:55:06 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+   
+</head>
+
+<body>
+    <div class="page-wrapper">
+<header th:replace="~{User/fragments/header::header}"></header>
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+        		<div class="container">
+        			<h1 class="page-title">Thông tin đơn hàng</h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="#">Cửa hàng</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Thông tin đơn hàng</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+            	<div class="checkout">
+	                <div class="container">
+            			
+		                	<div class="row">
+		                		<div class="col-lg-9">
+		                			<h2 class="checkout-title">Thông tin giao hàng</h2><!-- End .checkout-title -->
+		                				<div class="row">
+		                					<div class="col">
+		                						<label>Họ tên: *</label>
+		                						<input type="text" id="fullname" class="form-control" th:value="${session.user.fullname}" required>
+		                					</div><!-- End .col-sm-6 -->
+		                				</div><!-- End .row -->
+
+		                				<div class="row">
+		                					<div class="col">
+		                						<label>Số điện thoại: *</label>
+		                						<input type="tel" id="phone" class="form-control" th:value="${session.user.phone}" required>
+		                					</div><!-- End .col-sm-6 -->
+		                				</div><!-- End .row -->
+		                				
+										<div class="row" id="your-address-row">
+		                					<div class="col">
+		                						<label>Địa chỉ của bạn: *</label>
+		                						<select id="userAddress" class="form-control" >
+		                							<option th:each="address : ${session.user.address}" th:text="${address.addressType + ' _ ' + address.addressDetail }">Địa chỉ 1 của bạn</option>
+		                						</select>
+		                					</div><!-- End .col-sm-6 -->
+		                				</div><!-- End .row -->
+										<div class="custom-control custom-checkbox">
+											<input type="checkbox" class="custom-control-input" id="checkout-diff-address">
+											<label class="custom-control-label" for="checkout-diff-address">Một địa chỉ khác?</label>
+										</div><!-- End .custom-checkbox -->
+										
+										<div class="row" id="other-address-row" hidden="hidden">
+		                					<div class="col">
+		                						<label>Địa chỉ nhận hàng: *</label>
+	        									<input type="text" id="otherAddress" name="otherAddress" class="form-control" required>
+		                					</div><!-- End .col-sm-6 -->
+		                				</div><!-- End .row -->
+										<div class="checkout-discount">
+				            				<form id="voucherForm">
+				        						<input type="text" class="form-control" required id="checkout-discount-input">
+				            					<label for="checkout-discount-input" class="text-truncate"><span>Nhập mã giảm giá tại đây</span></label>
+				            				</form>
+				            			</div><!-- End .checkout-discount -->
+				            			<div hidden="hidden">
+				            				<input type="text" id="voucherIdApply">
+				            				<span id="voucherTypeApply"></span>
+				            				<span id="voucherValueApply" th:text="0"></span>
+				            			</div>
+		                		</div><!-- End .col-lg-9 -->
+		                		<aside class="col-lg-3">
+		                			<div class="summary">
+		                				<h3 class="summary-title">Đơn hàng của bạn</h3><!-- End .summary-title -->
+										<input type="text" id="shoppingCartId" th:value="${cart.shoppingCartId}" hidden="hidden">
+		                				<table class="table table-summary">
+		                				
+		                					<thead>
+		                						<tr>
+		                							<th>Sản phẩm</th>
+		                							<th>Giá tiền</th>
+		                						</tr>
+		                					</thead>
+
+		                					<tbody>
+		                						<tr th:each="cartItem : ${cart.items}">
+		                							<td><a th:href="'/User/productDetail/' + ${cartItem.product.productId}" th:text="${cartItem.product.productName}">Beige knitted elastic runner shoes</a></td>
+		                							<td th:text="${cartItem.product.price * cartItem.quantity}"> </td>
+		                						</tr>
+		                					
+		                						<tr class="summary-subtotal">
+		                							<td>Tổng tiền sản phẩm:</td>
+		                							<td th:text="${totalPrice}">$160.00</td>
+		                							
+		                						</tr><!-- End .summary-subtotal -->
+		                						<tr>
+		                							<td>Vận chuyển:</td>
+		                							<td>
+		                							<select id="deliveryId" name="deliveryId" class="form-control" style="width: 150px">
+										                <option th:each="deli : ${listdeli}"
+										                	th:data-delivery="${deli.price}"
+										                    th:value="${deli.deliveryId}"
+										                    th:text="${deli.deliveryName}">
+										                </option>
+										            </select>
+		                							</td>
+		                						</tr>
+		                						<tr class="summary-total">
+		                							<td>Tổng:</td>
+		                							<td id="totalAmount">$160.00</td>
+		                						</tr><!-- End .summary-total -->
+		                					</tbody>
+		                				</table><!-- End .table table-summary -->
+
+		                				<div class="accordion-summary" id="accordion-payment">
+
+										    <div class="card">
+										        <div class="card-header" id="heading-3">
+										            <h2 class="card-title">
+										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+										                    COD
+										                </a>
+										            </h2>
+										        </div><!-- End .card-header -->
+										        <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
+										            <div class="card-body">Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. 
+										            </div><!-- End .card-body -->
+										        </div><!-- End .collapse -->
+										    </div><!-- End .card -->
+
+										    <div class="card">
+										        <div class="card-header" id="heading-4">
+										            <h2 class="card-title">
+										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+										                    VNPay
+										                </a>
+										            </h2>
+										        </div><!-- End .card-header -->
+										        <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
+										            <div class="card-body">
+										                Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
+										            </div><!-- End .card-body -->
+										        </div><!-- End .collapse -->
+										    </div><!-- End .card -->
+
+										    
+										</div><!-- End .accordion -->
+
+		                				<button id="Payment" class="btn btn-outline-primary-2 btn-order btn-block">
+		                					<span  class="btn-text">Thanh toán</span>
+		                					<span class="btn-hover-text">Chọn để thanh toán</span>
+		                				</button>
+		                			</div><!-- End .summary -->
+		                		</aside><!-- End .col-lg-3 -->
+		                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .checkout -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+<footer th:replace="~{User/fragments/footer::footer}"></footer>
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+    <script>
+    document.getElementById('checkout-diff-address').addEventListener('change', function () {
+        const yourAddressRow = document.getElementById('your-address-row');
+        const otherAddressRow = document.getElementById('other-address-row');
+        
+        if (this.checked) {
+            yourAddressRow.hidden = true;
+            otherAddressRow.hidden = false;
+        } else {
+            yourAddressRow.hidden = false;
+            otherAddressRow.hidden = true;
+        }
+    });
+    document.getElementById('voucherForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Ngăn form reload trang
+
+        const voucherCode = document.getElementById('checkout-discount-input').value;
+
+        $.ajax({
+            url: '/api/voucher/check', // URL để xử lý yêu cầu
+            type: 'POST',
+            data: {
+            	voucherCode: voucherCode,
+            },
+            success: function (data) {
+            	document.getElementById('voucherValueApply').textContent = data.voucherValue;
+            	document.getElementById('voucherTypeApply').textContent = data.voucherType;
+            	document.getElementById('voucherIdApply').value = data.voucherId;
+            	updateTotal();
+            	alert('Áp dụng mã giảm giá thành công.')
+            },
+            error: function () {
+                alert('Mã code không tồn tại. Mời kiểm tra lại.');
+            }
+        });
+    });
+    
+    function updateTotal(){
+    	// Lấy giá trị tổng tiền sản phẩm
+        let totalPrice = parseFloat(document.querySelector('.summary-subtotal td:nth-child(2)').textContent.trim().replace('$', '').trim());
+
+        // Lấy giá trị vận chuyển từ option được chọn
+        const deliveryId = document.getElementById('deliveryId');
+        const selectedOption = deliveryId.options[deliveryId.selectedIndex];
+        let deliveryPrice = parseFloat(selectedOption.getAttribute('data-delivery'));
+
+        let valueVoucher = parseFloat(document.getElementById('voucherValueApply').textContent.trim());
+        const typeVoucher = document.getElementById('voucherTypeApply').textContent.trim();
+        if (typeVoucher == 'SHIP')
+        	{
+        	deliveryPrice = deliveryPrice - valueVoucher;
+        	
+        	if (deliveryPrice < 0)
+        		deliveryPrice = 0;
+        		
+        	}
+        if (typeVoucher == 'PRODUCT')
+    	{
+        	totalPrice = totalPrice - valueVoucher;
+    	}
+        
+        const totalAmount = totalPrice + deliveryPrice;
+        document.getElementById('totalAmount').textContent = totalAmount.toFixed(0) + 'đ'; // Cập nhật tổng
+    }
+ // Gọi hàm updateTotal khi trang được tải xong
+    document.addEventListener('DOMContentLoaded', function () {
+        updateTotal();
+    });
+
+    // Gọi hàm updateTotal khi người dùng thay đổi option trong dropdown
+    document.getElementById('deliveryId').addEventListener('change', function () {
+        updateTotal();
+    });
+    
+    
+    document.getElementById('Payment').addEventListener('click', function() {
+    	const shoppingCartId = parseInt(document.getElementById('shoppingCartId').value) || null;
+        const deliveryId = parseInt(document.getElementById('deliveryId').value) || null;
+        const voucherId = parseInt(document.getElementById('voucherIdApply').value) || null;
+        const total = parseFloat(document.querySelector('.summary-total td:nth-child(2)').textContent.trim().replace('$', '').trim()) || null;
+        const name = document.getElementById('fullname').value;
+        const phone = document.getElementById('phone').value;
+        const otherAddress = document.getElementById('otherAddress').value || null;
+        const userAddress = document.getElementById('userAddress');
+        const selectedOption = userAddress.options[userAddress.selectedIndex].value;
+        let shippingAddress = '';
+        const cards = document.querySelectorAll('#accordion-payment .card a[aria-expanded="true"]');
+        let payment = '';
+        if (cards.length <= 0) {
+            alert('Xin chon phuong thức thanh toán.');
+            return;
+        }
+        else {
+        	payment = cards[0].textContent.trim();
+        }
+        if (otherAddress == null)
+        	{
+        		shippingAddress = name + ' ' + phone + ' ' + selectedOption;
+        	}
+        else{
+        	shippingAddress = name + ' ' + phone + ' ' + otherAddress;
+        	}
+
+        $.ajax({
+            url: '/User/checkout-by-'+payment, // URL để xử lý yêu cầu
+            type: 'POST',
+            data: {
+            	shoppingCartId : shoppingCartId,
+            	deliveryId : deliveryId,
+            	voucherId : voucherId,
+            	shippingAddress : shippingAddress,
+            	total : total,
+            },
+            success: function (response) {
+            	alert('Tạo đơn hàng thành công');
+            	window.location.href = response;
+            },
+            error: function (response) {
+                alert('Có lỗi xảy ra. Mời quý khách quay lại vào hôm sau.');
+            }
+        });
+
+    });
+    </script>
+</body>
+</html>

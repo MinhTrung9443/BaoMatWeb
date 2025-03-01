@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Molla - Bootstrap eCommerce Template</title>
+	<meta name="keywords" content="HTML5 Template">
+	<meta name="description" content="Molla - Bootstrap eCommerce Template">
+	<meta name="author" content="p-themes">
+	<!-- Favicon -->
+	<link th:href="@{/assets/images/icons/apple-touch-icon.png}" rel="apple-touch-icon" sizes="180x180">
+	<link th:href="@{/assets/images/icons/favicon-32x32.png}" rel="icon" type="image/png" sizes="32x32">
+	<link th:href="@{/assets/images/icons/favicon-16x16.png}" rel="icon" type="image/png" sizes="16x16">
+	<link th:href="@{/assets/images/icons/site.html}" rel="manifest">
+	<link th:href="@{/assets/images/icons/safari-pinned-tab.svg}" rel="mask-icon" color="#666666">
+	<link th:href="@{/assets/images/icons/favicon.ico}" rel="shortcut icon">
+	<meta name="apple-mobile-web-app-title" content="Molla">
+	<meta name="application-name" content="Molla">
+	<meta name="msapplication-TileColor" content="#cc9966">
+	<meta name="msapplication-config" th:content="@{/assets/images/icons/browserconfig.xml}">
+	<meta name="theme-color" content="#ffffff">
+	<link th:href="@{/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css}" rel="stylesheet">
+	<!-- Plugins CSS File -->
+	<link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/assets/css/plugins/owl-carousel/owl.carousel.css}" rel="stylesheet">
+	<link th:href="@{/assets/css/plugins/magnific-popup/magnific-popup.css}" rel="stylesheet">
+	<link th:href="@{/assets/css/plugins/jquery.countdown.css}" rel="stylesheet">
+	<!-- Main CSS File -->
+	<link th:href="@{/assets/css/style.css}" rel="stylesheet">
+	<link th:href="@{/assets/css/skins/skin-demo-2.css}" rel="stylesheet">
+	<link th:href="@{/assets/css/demos/demo-2.css}" rel="stylesheet">
+
+
+</head>
+
+<body>
+	<style>
+		/* Custom Styles */
+		body {
+			font-family: 'Roboto', sans-serif;
+			background-color: #f4f7fa;
+		}
+
+		.container {
+			display: flex;
+			width: 100%;
+			/* Chiếm hết chiều rộng màn hình */
+		}
+
+		.sidebar {
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			width: 300px;
+			/* Giảm chiều rộng */
+		}
+
+		.sidebar h3 {
+			font-size: 1.5rem;
+			font-weight: 600;
+			margin-bottom: 20px;
+		}
+
+		.sidebar select,
+		.sidebar input {
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 15px;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+		}
+
+		.sidebar button {
+			background-color: rgb(149, 251, 36);
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 8px;
+			width: 50%;
+			cursor: pointer;
+		}
+
+		.sidebar button:hover {
+			background-color: #0056b3;
+		}
+
+		/* Style cho checkbox với màu gradient */
+		.checkbox-label {
+			display: inline-flex;
+			align-items: center;
+			cursor: pointer;
+		}
+
+		.checkbox-label input[type="checkbox"] {
+			appearance: none;
+			width: 20px;
+			height: 20px;
+			background: linear-gradient(45deg, #FF8A00, rgb(255, 128, 64));
+			border: 2px solid #ccc;
+			border-radius: 8px;
+			margin-right: 10px;
+			position: relative;
+			transition: all 0.3s ease;
+		}
+
+		.checkbox-label input[type="checkbox"]:checked {
+			background: linear-gradient(45deg, #00C853, #FFD600);
+			border-color: #00C853;
+		}
+
+		.checkbox-label input[type="checkbox"]:checked::after {
+			content: '';
+			position: absolute;
+			top: 5px;
+			left: 5px;
+			width: 10px;
+			height: 10px;
+			background-color: white;
+			border-radius: 50%;
+		}
+
+		/* Kiểu cho nhãn */
+		.checkbox-label span {
+			font-size: 14px;
+			color: #333;
+			font-family: Arial, sans-serif;
+		}
+
+		.product {
+			border: 1px solid #ddd;
+			border-radius: 10px;
+			overflow: hidden;
+			margin-bottom: 50px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+			flex-grow: 1;
+			/* Đảm bảo sản phẩm chiếm phần còn lại của không gian */
+			padding: 20px;
+			/* Thêm padding để tạo không gian xung quanh nội dung */
+			box-sizing: border-box;
+			/* Đảm bảo padding không làm thay đổi chiều rộng */
+		}
+
+		.product-action {
+			display: flex;
+			flex-direction: column;
+			/* Sắp xếp các nút theo chiều dọc */
+			gap: 10px;
+			/* Khoảng cách giữa các nút */
+		}
+
+		.btn-product {
+			display: inline-block;
+			padding: 10px 20px;
+			font-size: 1rem;
+			text-align: center;
+			border-radius: 5px;
+			text-decoration: none;
+			transition: background-color 0.3s ease;
+		}
+
+
+		.product img {
+			width: 100%;
+			height: 250px;
+			object-fit: cover;
+		}
+
+		.product-details {
+			padding: 15px;
+			text-align: center;
+		}
+
+		.product h3 {
+			font-size: 1.2rem;
+			font-weight: 600;
+			margin-bottom: 10px;
+		}
+
+		.product p {
+			color: #28a745;
+			font-size: 1.1rem;
+			margin-bottom: 15px;
+		}
+
+		.product .btn-primary {
+			background-color: #007bff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+		}
+
+		.product .btn-primary:hover {
+			background-color: #0056b3;
+		}
+
+		.main-content {
+			display: flex;
+			justify-content: space-between;
+			padding: 30px;
+		}
+
+		.product-list {
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		.product-list .col {
+			width: 23%;
+			margin-right: 2%;
+			margin-bottom: 20px;
+		}
+
+		.product-list .col:nth-child(4n) {
+			margin-right: 0;
+		}
+
+		.pagination-container {
+			display: flex;
+			justify-content: right;
+			margin-top: 20px;
+			/* Thêm khoảng cách phía trên nếu cần */
+			flex-grow: 1;
+			padding: 20px;
+		}
+
+		.pagination {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			/* Khoảng cách giữa các liên kết phân trang */
+		}
+
+
+
+		.pagination a:hover {
+			text-decoration: underline;
+		}
+
+		.pagination span {
+			font-weight: bold;
+		}
+
+
+		footer {
+			background-color: #333;
+			color: white;
+			padding: 20px 0;
+			text-align: center;
+		}
+
+		footer a {
+			color: #fff;
+			text-decoration: none;
+			margin: 0 10px;
+		}
+
+		footer a:hover {
+			text-decoration: underline;
+		}
+	</style>
+	<div class="page-wrapper">
+		<header th:replace="~{User/fragments/header::header}"></header>
+
+		<main class="main">
+			<div class="container">
+				<form action="/User/Search" method="get">
+					<div class="sidebar">
+						<h3>Bộ Lọc Tìm Kiếm</h3>
+
+						<!-- Bộ lọc giá -->
+						<label for="minPrice">Giá tối thiểu:</label>
+						<input type="number" id="minPrice" name="minPrice" placeholder="Từ..." th:value="${minPrice}"
+							min="0"><br>
+						<br>
+
+						<label for="maxPrice">Giá tối đa:</label>
+						<input type="number" id="maxPrice" name="maxPrice" placeholder="Đến..." th:value="${maxPrice}"
+							max="100000000"><br><br>
+						<button type="submit">Áp dụng</button><br><br>
+						<!-- Bộ lọc thương hiệu -->
+						<label class="checkbox-label">
+							<label style="display: inline-flex; align-items: baseline; white-space: nowrap;">
+								<input type="checkbox" id="toggleBrands" onchange="toggleBrandCheckboxes()">
+								<span style="margin-left: 8px; font-size: 14px;">Thương hiệu</span>
+							</label>
+						</label>
+
+						<!-- Div chứa các checkbox thương hiệu -->
+						<div id="brands" style="display: none;">
+							<div th:each="brand : ${brands}">
+								<label style="display: inline-flex; align-items: baseline; white-space: nowrap;">
+									<input type="radio" name="brand" th:value="${brand}"
+										th:checked="${brand == selectedBrand}" onchange="this.form.submit()">
+									<span style="margin-left: 8px; font-size: 14px;" th:text="${brand}"></span>
+								</label><br>
+							</div>
+						</div>
+
+
+
+
+
+						<!-- Bộ lọc xuất xứ -->
+						<form method="get" action="">
+							<label class="checkbox-label">
+								<label style="display: inline-flex; align-items: baseline; white-space: nowrap;">
+									<input type="checkbox" id="toggleOrigin" onchange="toggleOriginCheckboxes()">
+									<span style="margin-left: 8px; font-size: 14px;">Nguồn gốc</span>
+								</label>
+							</label>
+							<div id="origin" style="display: none;">
+								<div th:each="brandOrigin : ${brandOrigins}">
+									<label style="display: inline-flex; align-items: baseline; white-space: nowrap;">
+										<input type="radio" name="brandOrigin" th:value="${brandOrigin}"
+											th:checked="${brandOrigin == selectedBrandOrigin}"
+											onchange="this.form.submit()">
+										<span style="margin-left: 8px; font-size: 14px;"
+											th:text="${brandOrigin}"></span>
+									</label><br>
+								</div>
+							</div>
+						</form>
+
+
+
+
+
+
+						<!-- Bộ lọc thể loại -->
+						<form method="get" action="">
+							<label class="checkbox-label">
+								<label style="display: inline-flex; align-items: baseline; white-space: nowrap;">
+									<input type="checkbox" id="toggleCategory" onchange="toggleCategoryCheckboxes()">
+									<span style="margin-left: 8px; font-size: 14px;">Thể loại</span>
+								</label>
+							</label>
+							<div id="category_name" style="display: none;">
+								<div th:each="category_name : ${category_names}">
+									<label style="display: inline-flex; align-items: baseline; white-space: nowrap;">
+										<input type="radio" name="category_name" th:value="${category_name}"
+											th:checked="${category_name == selectedCategory_name}"
+											onchange="this.form.submit()">
+										<span style="margin-left: 8px; font-size: 14px;"
+											th:text="${category_name}"></span>
+									</label><br>
+								</div>
+							</div>
+						</form>
+
+
+					</div>
+					<br>
+				</form>
+				<!-- Hiển thị sản phẩm -->
+				<div class="col-lg-9 col-md-8">
+
+					<div class="products">
+
+						<div class="row">
+							<!-- Duyệt qua các sản phẩm -->
+							<div th:each="product : ${products}" class="col-lg-4 col-md-4 col-sm-6">
+								<div class="product product-11 text-center">
+									<figure class="product-media">
+											<a th:href="@{/product-details/{productId}(productId=${product.productId})}">
+												<img th:if="${#strings.startsWith(product.images[0].imageUrl, 'http')}"
+											th:src="${product.images[0].imageUrl}" class="product-image"
+											alt="Ảnh sản phẩm">
+	
+										<!-- Nếu không phải URL, giả sử là file trên server -->
+										<img th:if="${!#strings.startsWith(product.images[0].imageUrl, 'http')}"
+											th:src="@{'/api/images?imageName=' + ${product.images[0].imageUrl}}"
+											class="product-image" 
+											alt="Ảnh sản phẩm">
+
+										</a>
+
+										<div class="product-action-vertical">
+											<a href="#" class="btn-product-icon btn-wishlist">
+												<span>add to wishlist</span>
+											</a>
+										</div><!-- End .product-action-vertical -->
+									</figure><!-- End .product-media -->
+
+									<div class="product-body">
+										<h3 class="product-title">
+											<a th:href="@{/product-details/{productId}(productId=${product.productId})}"
+												th:text="${product.productName}"></a>
+										</h3><!-- End .product-title -->
+										<div class="product-price" th:text="${product.price} + ' VND'">
+											<!-- Hiển thị giá sản phẩm -->
+										</div><!-- End .product-price -->
+									</div><!-- End .product-body -->
+
+									<div class="product-action">
+										<form th:action="@{/User/add-to-cart}" method="post">
+											<input type="hidden" name="productId" th:value="${product.productId}" />
+											<input type="hidden" name="quantity" th:value="1" />
+											<button type="submit" class="btn-product btn-cart"><span>Thêm vào giỏ
+													hàng</span></button>
+											<a th:href="@{/product-details/{productId}(productId=${product.productId})}"
+												class="btn-product btn-cart">
+												<span>Xem chi tiết</span>
+											</a>
+										</form>
+									</div><!-- End .product-action -->
+								</div><!-- End .product -->
+							</div><!-- End .col-lg-3 col-md-4 col-sm-6 -->
+						</div><!-- End .row -->
+					</div><!-- End .products -->
+					<!-- Phân trang -->
+					<div class="pagination">
+						<!-- Liên kết trang trước -->
+						<a th:href="@{/User/Search(page=${currentPage - 1}, size=${size})}"
+							th:if="${currentPage > 0}">&laquo; Previous</a>
+
+						<!-- Hiển thị số trang hiện tại và tổng số trang -->
+						<span th:text="${currentPage + 1}">1</span> / <span th:text="${totalPages}">1</span>
+
+						<!-- Liên kết trang tiếp theo -->
+						<a th:href="@{/User/Search(page=${currentPage + 1}, size=${size})}"
+							th:if="${currentPage < totalPages - 1}">Next &raquo;</a>
+					</div>
+
+				</div><!-- End .col-lg-9 col-md-8 -->
+			</div>
+
+		</main><!-- End .main -->
+		<footer th:replace="~{User/fragments/footer::footer}"></footer>
+
+		<!-- Plugins JS File -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/bootstrap.bundle.min.js"></script>
+		<script src="assets/js/jquery.hoverIntent.min.js"></script>
+		<script src="assets/js/jquery.waypoints.min.js"></script>
+		<script src="assets/js/superfish.min.js"></script>
+		<script src="assets/js/owl.carousel.min.js"></script>
+		<script src="assets/js/jquery.plugin.min.js"></script>
+		<script src="assets/js/jquery.magnific-popup.min.js"></script>
+		<script src="assets/js/jquery.countdown.min.js"></script>
+		<!-- Main JS File -->
+		<script src="assets/js/main.js"></script>
+		<script src="assets/js/demos/demo-2.js"></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				// Lắng nghe sự kiện thay đổi trên các filter
+				const categoryFilters = document.querySelectorAll('#category_name input[type="checkbox"]');
+				const brandFilters = document.querySelectorAll('#brand input[type="checkbox"]');
+				const originFilters = document.querySelectorAll('#origin input[type="checkbox"]');
+
+				// Lắng nghe sự kiện trên checkbox category, brand, origin
+				categoryFilters.forEach(filter => {
+					filter.addEventListener('change', function () {
+						handleSingleSelection(categoryFilters, this);
+						updateURLAndSubmit('category');
+					});
+				});
+
+				brandFilters.forEach(filter => {
+					filter.addEventListener('change', function () {
+						handleSingleSelection(brandFilters, this);
+						updateURLAndSubmit('brand');
+					});
+				});
+
+				originFilters.forEach(filter => {
+					filter.addEventListener('change', function () {
+						handleSingleSelection(originFilters, this);
+						updateURLAndSubmit('origin');
+					});
+				});
+			});
+
+			// Hàm để đảm bảo chỉ một checkbox được chọn trong mỗi nhóm
+			function handleSingleSelection(filters, selectedCheckbox) {
+				filters.forEach(checkbox => {
+					if (checkbox !== selectedCheckbox) {
+						checkbox.checked = false;  // Bỏ chọn các checkbox khác trong nhóm
+					}
+				});
+			}
+
+			// Hàm để cập nhật và thay đổi URL sau khi xóa các filter còn lại
+			function updateURLAndSubmit(changedFilter) {
+				// Lấy tất cả giá trị của các filter
+				var category = Array.from(document.querySelectorAll('#category_name input[type="checkbox"]:checked')).map(checkbox => checkbox.value).join(',');
+				var brand = Array.from(document.querySelectorAll('#brand input[type="checkbox"]:checked')).map(checkbox => checkbox.value).join(',');
+				var origin = Array.from(document.querySelectorAll('#origin input[type="checkbox"]:checked')).map(checkbox => checkbox.value).join(',');
+
+				// Xóa các filter khác khi thay đổi một filter
+				if (changedFilter === 'category') {
+					brand = '';  // Xóa sạch lọc brand
+					origin = ''; // Xóa sạch lọc origin
+				} else if (changedFilter === 'brand') {
+					category = '';  // Xóa sạch lọc category
+					origin = '';    // Xóa sạch lọc origin
+				} else if (changedFilter === 'origin') {
+					category = '';  // Xóa sạch lọc category
+					brand = '';     // Xóa sạch lọc brand
+				}
+
+				// Cập nhật URL bằng cách sử dụng history.pushState hoặc replaceState
+				var url = new URL(window.location.href); // Lấy URL hiện tại
+				url.searchParams.set('category', category);  // Cập nhật hoặc xóa category
+				url.searchParams.set('brand', brand);        // Cập nhật hoặc xóa brand
+				url.searchParams.set('origin', origin);      // Cập nhật hoặc xóa origin
+
+				// Thay đổi URL mà không tải lại trang
+				history.replaceState(null, '', url);
+
+				// Gửi form sau khi thay đổi URL
+				submitForm(category, brand, origin);
+			}
+
+			// Hàm để gửi form với các giá trị filter đã cập nhật
+			function submitForm(category, brand, origin) {
+				// Tạo form ẩn để gửi dữ liệu
+				var form = document.createElement('form');
+				form.method = 'GET';
+				form.action = window.location.href;
+
+				// Tạo và thêm các input ẩn vào form
+				addHiddenInput(form, 'category', category);
+				addHiddenInput(form, 'brand', brand);
+				addHiddenInput(form, 'origin', origin);
+
+				// Gửi form
+				document.body.appendChild(form);
+				form.submit();
+			}
+
+			// Hàm thêm input ẩn vào form
+			function addHiddenInput(form, name, value) {
+				var input = document.createElement('input');
+				input.type = 'hidden';
+				input.name = name;
+				input.value = value;
+				form.appendChild(input);
+			}
+
+			// Hàm hiển thị hoặc ẩn các checkbox thương hiệu khi checkbox "Thương hiệu" được chọn
+			function toggleBrandCheckboxes() {
+				var checkbox = document.getElementById('toggleBrands');
+				var brandsDiv = document.getElementById('brands');
+
+				// Toggle hiển thị checkbox thương hiệu
+				if (checkbox.checked) {
+					brandsDiv.style.display = 'block'; // Hiển thị danh sách
+				} else {
+					brandsDiv.style.display = 'none'; // Ẩn danh sách
+				}
+				// Nếu checkbox bị tắt, ẩn div và xóa thông tin đã chọn
+				if (!checkbox.checked) {
+					brandsDiv.style.display = 'none';
+					// Xóa giá trị đã chọn trong các radio button
+					const radios = brandsDiv.querySelectorAll('input[type="radio"]');
+					radios.forEach(radio => radio.checked = false);
+				} else {
+					brandsDiv.style.display = 'block';
+				}
+			}
+
+			// Hàm hiển thị hoặc ẩn các checkbox nguồn gốc khi checkbox "Nguồn gốc" được chọn
+			function toggleOriginCheckboxes() {
+				var checkbox = document.getElementById('toggleOrigin');
+				var originDiv = document.getElementById('origin');
+
+				// Toggle hiển thị checkbox nguồn gốc
+				if (checkbox.checked) {
+					originDiv.style.display = 'block'; // Hiển thị danh sách
+				} else {
+					originDiv.style.display = 'none'; // Ẩn danh sách
+				}
+				// Nếu checkbox bị tắt, ẩn div và xóa thông tin đã chọn
+				if (!checkbox.checked) {
+					originDiv.style.display = 'none';
+					// Xóa giá trị đã chọn trong các radio button
+					const radios = originDiv.querySelectorAll('input[type="radio"]');
+					radios.forEach(radio => radio.checked = false);
+				} else {
+					originDiv.style.display = 'block';
+				}
+			}
+
+			// Hàm hiển thị hoặc ẩn các checkbox thể loại khi checkbox "Thể loại" được chọn
+			function toggleCategoryCheckboxes() {
+				var checkBox = document.getElementById("toggleCategory");
+				var categoryDiv = document.getElementById("category_name");
+
+				if (checkBox.checked) {
+					categoryDiv.style.display = "block";  // Hiển thị checkbox thể loại
+				} else {
+					categoryDiv.style.display = "none";   // Ẩn checkbox thể loại
+				}
+				// Nếu checkbox bị tắt, ẩn div và xóa thông tin đã chọn
+				if (!checkbox.checked) {
+					categoryDiv.style.display = 'none';
+					// Xóa giá trị đã chọn trong các radio button
+					const radios = categoryDiv.querySelectorAll('input[type="radio"]');
+					radios.forEach(radio => radio.checked = false);
+				} else {
+					categoryDiv.style.display = 'block';
+				}
+			}
+		</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https//www.thymeleaf.org/thymeleaf-extra-springsecurity6">
+
+
+<!-- molla/cart.html  22 Nov 2019 09:55:06 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+    .rating {
+        display: inline-flex;
+        gap: 10px;
+    }
+
+    .rating input[type="radio"] {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background-color: #ddd;
+        border-radius: 50%;
+        border: 2px solid #aaa;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .rating input[type="radio"]:checked {
+        background-color: #f39c12;
+        border-color: #f39c12;
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    .submit-btn {
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background-color: #2980b9;
+    }
+</style>
+
+</head>
+
+<body>
+    <div class="page-wrapper">
+<header th:replace="~{User/fragments/header::header}"></header>
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+        		<div class="container">
+        			<h1 class="page-title">Chi tiết đơn hàng</h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="#">Cửa hàng</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Chi tiết đơn hàng</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+            	<div class="cart">
+	                <div class="container">
+	                	<div class="row">
+	                		<div class="col-lg-9">
+	                			<div>
+	                				<input type="text" id="orderId" th:value = "${order.orderId}" hidden="hidden">
+	                				<p><strong>Họ tên:</strong> <span th:text="${order.user.fullname}"></span></p>
+	                				<p><strong>Địa chỉ giao hàng:</strong> <span th:text="${order.shippingAddress}"></span></p>
+	                				<p><strong>Điện thoại khách hàng:</strong> <span th:text="${order.user.phone}"></span></p>
+	                				<p><strong>Ngày đặt:</strong> <span th:text="${order.orderDate}"></span></p>
+	                				<p><strong>Trạng thái:</strong> <span th:text="${order.orderStatus.name()}"></span></p>
+	                			</div>
+	                			<table class="table table-cart table-mobile">
+									<thead>
+										<tr>
+											<th>Sản phẩm</th>
+											<th>Giá</th>
+											<th>Số lượng</th>
+											<th>Giá tiền</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr th:each="orderline : ${order.lines}">
+											<td class="product-col">
+												<div class="product">
+													<figure class="product-media">
+														<a th:href="'/User/productDetail/' + ${orderline.product.productId}">
+															<img th:src="${orderline.product.images[0].imageUrl}" alt="Product image">
+														</a>
+													</figure>
+
+													<h3 class="product-title">
+														<a th:href="'/User/productDetail/' + ${orderline.product.productId}" th:text="${orderline.product.productName}">Beige knitted elastic runner shoes</a>
+													</h3><!-- End .product-title -->
+												</div><!-- End .product -->
+											</td>
+											<td class="price-col" th:text="${orderline.product.price} + ' đ'">$84.00</td>
+											<td class="quantity-col">
+                                                <div class="cart-product-quantity">
+                                                    <span  th:text="${orderline.quantity}"></span>
+                                                </div><!-- End .cart-product-quantity -->
+                                            </td>
+											<td class="total-col" th:text="${orderline.product.price * orderline.quantity} + ' đ'">$84.00</td>
+										</tr>
+
+									</tbody>
+								</table><!-- End .table table-wishlist -->
+
+	                		</div><!-- End .col-lg-9 -->
+	                		<aside class="col-lg-3">
+	                			<div class="summary summary-cart" >
+	                				<h3 class="summary-title" th:if="${order.vouchers}">Mã giảm giá</h3><!-- End .summary-title -->
+
+	                				<table class="table table-summary" th:if="${order.vouchers}">
+	                					<tbody>
+	                						<tr class="summary-subtotal">
+	                							<td>Giá trị voucher:</td>
+	                							<td th:text="${order.vouchers.voucherValue}">$160.00</td>
+	                						</tr><!-- End .summary-subtotal -->
+   	                					</tbody>
+	                				</table><!-- End .table table-summary -->
+	                				<h3 class="summary-title" style="margin-top: 10px">Nhà vận chuyển</h3><!-- End .summary-title -->
+
+	                				<table class="table table-summary">
+	                					<tbody>
+	                						<tr class="summary-subtotal">
+	                							<td>Nhà vận chuyển:</td>
+	                							<td th:text="${order.delivery.deliveryName}">$160.00</td>
+	                						</tr><!-- End .summary-subtotal -->
+	                						<tr class="summary-subtotal">
+	                							<td>Phí vận chuyển:</td>
+	                							<td th:text="${order.delivery.price}">$160.00</td>
+	                						</tr><!-- End .summary-subtotal -->
+   	                					</tbody>
+	                				</table><!-- End .table table-summary -->
+	                				
+	                				<h3 class="summary-title" style="margin-top: 10px">Thanh toán</h3><!-- End .summary-title -->
+
+	                				<table class="table table-summary">
+	                					<tbody>
+	                						<tr class="summary-subtotal">
+	                							<td>Phương thức thanh toán:</td>
+	                							<td th:text="${order.payment.paymentMethod}">$160.00</td>
+	                						</tr><!-- End .summary-subtotal -->
+	                						<tr class="summary-subtotal">
+	                							<td>Tổng chi phí:</td>
+	                							<td th:text="${order.payment.total} + 'đ'">$160.00</td>
+	                						</tr><!-- End .summary-subtotal -->
+   	                					</tbody>
+	                				</table><!-- End .table table-summary -->
+	                				<div style="display: flex;">
+										<div class="col-6 col-lg-4 col-xl-2" th:if="${order.orderStatus.name() == 'COMPLETED' }" >
+									   		<div class="btn-wrap">
+									    		<a href="#" onclick="returnOrder()" class="btn btn-outline-primary btn-rounded">Trả đơn hàng</a>
+									    	</div> <!-- End .btn-wrap -->
+									    </div><!-- End .col-md-4 col-lg-2 -->
+									</div>
+	                			</div><!-- End .summary -->
+	                		</aside><!-- End .col-lg-3 -->
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .cart -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+        
+                
+      <div th:if="${order.orderStatus.name() == 'COMPLETED'}" class="container mt-4">
+    <h3 class="text-center">Đánh giá.</h3>
+    <form action="/User/review" method="post" class="shadow p-4 rounded bg-light" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <input type="hidden" name="orderId" th:value="${order.orderId}">
+        
+        <!-- Sản phẩm đánh giá -->
+        <div class="mb-3">
+            <label for="productId" class="form-label">Sản phẩm đánh giá:</label>
+            <select id="productId" name="productId" class="form-select">
+                <option th:each="orderLine : ${order.lines}"
+                    th:value="${orderLine.product.productId}"
+                    th:text="${orderLine.product.productName}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Đánh giá bằng sao -->
+        <div class="mb-3">
+            <label class="form-label">Đánh giá bằng sao:</label>
+            <div class="rating d-flex align-items-center">
+                <input type="radio" name="rating" id="star1" value="1">
+                <input type="radio" name="rating" id="star2" value="2">
+                <input type="radio" name="rating" id="star3" value="3">
+                <input type="radio" name="rating" id="star4" value="4">
+                <input type="radio" name="rating" id="star5" value="5">
+            </div>
+        </div>
+
+        <!-- Lời đánh giá -->
+        <div class="mb-3">
+            <label for="comment" class="form-label">Lời đánh giá:</label>
+            <textarea id="comment" name="comment" class="form-control" rows="4" placeholder="Nhập lời đánh giá của bạn..."></textarea>
+        </div>
+        
+        <div >
+		    <label for="imageInput" class="form-label">Tải hình ảnh lên:</label>
+		    <div>
+		        <input type="file" id="image" name="image">
+		    </div>
+		</div>
+
+        <!-- Nút gửi đánh giá -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary px-4">Gửi đánh giá</button>
+        </div>
+    </form>
+</div>
+
+	<div style="display: flex; justify-content: center">
+		<div class="col-6 col-lg-4 col-xl-2" th:if="${order.orderStatus.name() == 'PENDING' || order.orderStatus.name() == 'CONFIRMED'}" >
+	   		<div class="btn-wrap"  >
+	    		<a href="#" onclick="cancelOrder()"  class="btn btn-outline-primary btn-rounded">Hủy đơn hàng</a>
+	    	</div><!-- End .btn-wrap -->
+	    </div><!-- End .col-md-4 col-lg-2 -->
+	</div>
+
+	
+	
+<footer th:replace="~{User/fragments/footer::footer}"></footer>
+
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Plugins JS File -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/bootstrap-input-spinner.js"></script>
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+    
+    
+<script >
+
+document.getElementById('reviewForm').addEventListener('submit', function(event) {
+    const comment = document.getElementById('comment').value.trim();
+    const errorElement = document.getElementById('commentError');
+
+    if (comment.length < 50) {
+        event.preventDefault(); // Ngăn không cho form submit
+        errorElement.classList.remove('d-none'); // Hiển thị lỗi
+    } else {
+        errorElement.classList.add('d-none'); // Ẩn lỗi nếu hợp lệ
+    }
+});
+function validateForm() {
+    var comment = document.getElementById('comment').value;
+    if (comment.length < 50) {
+        alert("Lời đánh giá phải có ít nhất 50 ký tự.");
+        return false;  // Ngừng gửi form nếu điều kiện không thỏa mãn
+    }
+    return true;  // Gửi form nếu điều kiện thỏa mãn
+}
+
+function cancelOrder()
+{
+	const orderId = document.getElementById('orderId').value;
+	
+	const userConfirmed = confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');
+
+	
+	if (userConfirmed) {
+		
+		// Thực hiện lưu dữ liệu (gửi dữ liệu đến server thông qua AJAX)
+        $.ajax({
+            url: '/User/Order/cancel', // URL để xử lý yêu cầu
+            type: 'POST',
+            data: {
+            	orderId: orderId,
+            },
+            success: function () {
+                alert('Đã hủy đơn hàng!'); 
+                window.location.href = '/User/Order/detail/' + orderId;
+            },
+            error: function (response) {
+                alert(response);
+                window.location.href = '/User/Order/detail/' + orderId;
+            }
+        });
+	}
+	}
+function returnOrder()
+{
+	const orderId = document.getElementById('orderId').value;
+	
+	const userConfirmed = confirm('Bạn có chắc chắn muốn trả lại đơn hàng này?');
+
+	
+	if (userConfirmed) {
+		
+		// Thực hiện lưu dữ liệu (gửi dữ liệu đến server thông qua AJAX)
+        $.ajax({
+            url: '/User/Order/return', // URL để xử lý yêu cầu
+            type: 'POST',
+            data: {
+            	orderId: orderId,
+            },
+            success: function () {
+                alert('Đã gửi yêu cầu trả đơn hàng!'); 
+                window.location.href = '/User/Order/detail/' + orderId;
+            },
+            error: function (response) {
+                alert(response);
+                window.location.href = '/User/Order/detail/' + orderId;
+            }
+        });
+	}
+	}
+</script>
+
+</body>
+
+
+<!-- molla/cart.html  22 Nov 2019 09:55:06 GMT -->
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/Admin/index.html}">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Thêm nhân viên</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+	<!-- BEGIN GLOBAL MANDATORY STYLES -->
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"
+		type="text/css">
+	<link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css">
+	<link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css">
+	<link href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet"
+		type="text/css" />
+	<!-- END GLOBAL MANDATORY STYLES -->
+	<!-- BEGIN PAGE LEVEL STYLES -->
+	<link rel="stylesheet" type="text/css" href="/assets/global/plugins/select2/select2.css" />
+	<!-- END PAGE LEVEL SCRIPTS -->
+	<!-- BEGIN THEME STYLES -->
+	<link href="/assets/global/css/components.css" id="style_components" rel="stylesheet" type="text/css" />
+	<link href="/assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/admin/layout2/css/layout.css" rel="stylesheet" type="text/css" />
+	<link id="style_color" href="/assets/admin/layout2/css/themes/grey.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/admin/layout2/css/custom.css" rel="stylesheet" type="text/css" />
+	<!-- END THEME STYLES -->
+	<link rel="shortcut icon" href="favicon.ico" />
+</head>
+
+<body layout:fragment="content">
+	<div class="clearfix">
+	</div>
+
+	<!-- BEGIN PAGE HEADER-->
+	<h3 class="page-title">
+		Quản lý nhân viên
+	</h3>
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<i class="fa fa-home"></i>
+				<a href="/Admin">Home</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li>
+				<a href="/Admin/vendor">Quản lý nhân viên</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li>
+				<a href="#">Thêm nhân viên</a>
+			</li>
+		</ul>
+	</div>
+	<!-- END PAGE HEADER-->
+	<!-- BEGIN PAGE CONTENT-->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="tabbable tabbable-custom tabbable-noborder tabbable-reversed">
+
+				<div class="tab-content">
+					<div class="portlet box blue ">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="fa fa-gift"></i>THÊM NHÂN VIÊN
+							</div>
+						</div>
+
+						<div class="portlet-body form">
+							<form action="/Admin/vendor/create" method="post" th:object=${vendor}
+								class="form-horizontal form-bordered">
+
+								<div class="form-body">
+
+									<div class="form-group">
+										<label class="control-label col-md-3">Tên người dùng</label>
+										<div class="col-md-9">
+											<input type="text" id="username" name="username"
+												th:value="${vendor != null && vendor.account != null ? vendor.account.username : ''}"
+												class="form-control" />
+											<div th:if="${existUsername}" class="alert alert-info">
+												<span th:text="${existUsername}"></span>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-3">Mật khẩu</label>
+										<div class="col-md-9">
+											<input type="text" id="password" name="password"
+												th:value="${vendor != null &&vendor.account != null ? vendor.account.password : ''}"
+												class="form-control" />
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<label class="control-label col-md-3">Họ và tên</label>
+										<div class="col-md-9">
+											<input type="text" id="fullname" name="fullname"
+												th:value="${vendor.fullname}" class="form-control">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-3">Giới tính</label>
+										<div class="col-md-9">
+											<select class="form-control">
+												<option value="1" th:selected="${vendor.gender == 1}">Nam</option>
+												<option value="0" th:selected="${vendor.gender == 0}">Nữ</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-3">Số điện thoại</label>
+										<div class="col-md-9">
+											<input type="text" id="phone" name="phone" th:value="${vendor.phone}"
+												class="form-control">
+											<div th:if="${checkPhone}" class="alert alert-info">
+												<span th:text="${checkPhone}"></span>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-3">Email</label>
+										<div class="col-md-9">
+											<input type="email" id="email" name="email" th:value="${vendor.email}"
+												class="form-control">
+											<div th:if="${existEmail}" class="alert alert-info">
+												<span th:text="${existEmail}"></span>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-3">Ngày bắt đầu</label>
+										<div class="col-md-9">
+											<input type="datetime-local" class="form-control" id="startDate" name="startDate"
+												th:value="${vendor.startDate}" />
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-3">Lương</label>
+										<div class="col-md-9">
+											<input type="text" id="salary" name="salary" th:value="${vendor.salary}"
+												class="form-control">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-3">Trạng thái</label>
+										<div class="col-md-9">
+											<div class="radio-list">
+												<label>
+													<input type="radio" id="active" name="active" th:value="1"
+														th:checked="${vendor?.account?.active == 1}" />
+													Mở Khoá
+												</label>
+												<label>
+													<input type="radio" id="inactive" name="active" th:value="0"
+														th:checked="${vendor?.account?.active == 0}" />
+													Khoá
+												</label>
+											</div>
+										</div>
+									</div>
+
+
+								</div>
+								<div class="form-actions">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="row">
+												<div class="col-md-offset-3 col-md-9">
+													<button type="submit" class="btn green"><i class="fa fa-check"></i>
+														Submit</button>
+													<button type="button" class="btn default"
+														onclick="window.history.back()">Cancel</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+							<!-- END FORM-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END PAGE CONTENT-->
+	<!-- BEGIN FOOTER -->
+	<footer th:replace="~{Admin/fragments/footer::footer}"></footer>
+	<!-- END FOOTER -->
+	</div>
+	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+	<!-- BEGIN CORE PLUGINS -->
+
+	<script src="/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+	<script src="/assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+	<!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+	<script src="/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+	<script src="/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+		type="text/javascript"></script>
+	<script src="/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+	<script src="/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+	<script src="/assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+	<script src="/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+	<script src="/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+	<!-- END CORE PLUGINS -->
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script type="text/javascript" src="/assets/global/plugins/select2/select2.min.js"></script>
+	<!-- END PAGE LEVEL PLUGINS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="/assets/global/scripts/metronic.js" type="text/javascript"></script>
+	<script src="/assets/admin/layout2/scripts/layout.js" type="text/javascript"></script>
+	<script src="/assets/admin/layout2/scripts/demo.js" type="text/javascript"></script>
+	<script src="/assets/admin/pages/scripts/form-samples.js"></script>
+	<!-- END PAGE LEVEL SCRIPTS -->
+	<script>
+		jQuery(document).ready(function () {
+			// initiate layout and plugins
+			Metronic.init(); // init metronic core components
+			Layout.init(); // init current layout
+			Demo.init(); // init demo features
+			FormSamples.init();
+		});
+	</script>
+	<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+
+</html>

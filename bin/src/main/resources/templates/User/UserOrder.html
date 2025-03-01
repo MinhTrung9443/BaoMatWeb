@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https//www.thymeleaf.org/thymeleaf-extra-springsecurity6">
+
+
+<!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<header th:replace="~{User/fragments/header::header}"></header>
+  <div style="display: flex; justify-content: space-around">
+		<div class="row">
+
+     		<div>
+  			<ul class="nav nav-pills" id="tabs-5" role="tablist" style="display: flex;justify-content: center">
+		    <li class="nav-item">
+		        <a class="nav-link" id="tab-17-tab" data-toggle="tab" href="?tab=don-cho-xac-nhan" role="tab" aria-controls="tab-17" aria-selected="true">Đơn hàng mới</a>
+		    </li>
+		    <li class="nav-item">
+		        <a class="nav-link" id="tab-18-tab" data-toggle="tab" href="?tab=don-da-xac-nhan" role="tab" aria-controls="tab-18" aria-selected="false">Đã xác nhận</a>
+		    </li>
+		    <li class="nav-item">
+		        <a class="nav-link" id="tab-19-tab" data-toggle="tab" href="?tab=don-dang-van-chuyen" role="tab" aria-controls="tab-19" aria-selected="false">Đang giao</a>
+		    </li>
+		    <li class="nav-item">
+		        <a class="nav-link" id="tab-20-tab" data-toggle="tab" href="?tab=don-da-giao" role="tab" aria-controls="tab-20" aria-selected="false">Đã giao</a>
+		    </li>
+		    <li class="nav-item">
+		        <a class="nav-link" id="tab-21-tab" data-toggle="tab" href="?tab=don-huy" role="tab" aria-controls="tab-21" aria-selected="false">Hủy</a>
+		    </li>
+		    <li class="nav-item">
+		        <a class="nav-link" id="tab-22-tab" data-toggle="tab" href="?tab=don-hoan-tra" role="tab" aria-controls="tab-22" aria-selected="false">Trả hàng-hoàn tiền</a>
+		    </li>
+		</ul>
+		<div class="tab-content" id="tab-content-5">
+		    <div class="tab-pane fade show active" id="tab-17" role="tabpanel" aria-labelledby="tab-17-tab">
+		    	<div class="container mt-4">
+		    <div class="row">
+		        <div class="col-md-12">
+		            <div th:each="order : ${orders}" class="card mb-3 shadow">
+		                <div class="card-header " style="display: flex; justify-content: space-between">
+		                    <h5 class="card-title mb-0">Mã đơn hàng: <span th:text="${order.orderId}"></span></h5>
+		                    <p  th:text="${order.orderStatus}" ></p>
+		                </div>
+		                <div class="card-body" style="display: flex; justify-content: space-between">
+		                	<div>
+			                	<p><strong>Ngày đặt hàng:</strong> <span th:text="${order.orderDate}"></span></p>
+			                    <p><strong>Địa chỉ giao hàng:</strong> <span th:text="${order.shippingAddress}"></span></p>
+		                	</div>
+		                    <div th:if="${order.payment != null}">
+			                    <p><strong>Tổng tiền:</strong> <span th:text="${order.payment.total}"></span></p>
+		                    </div>
+		                </div>
+		                <div class="card-footer text-end" style="display: flex; justify-content: end;">
+		                    <a th:href="'/User/Order/detail/'+${order.orderId}" class="btn btn-primary btn-sm">Xem chi tiết</a>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		
+		    </div><!-- .End .tab-pane -->
+		</div><!-- End .tab-content -->
+
+</div><!-- End .col-md-6 -->
+
+</div><!-- .End .tab-pane -->
+</div>
+<nav class="custom-pagination" aria-label="Page navigation example"
+	style="display: flex; justify-content: center; margin-top: 20px;"
+	th:if="${currentPage}">
+	<ul class="pagination">
+		<!-- Nút "Previous" -->
+		<li class="page-item"
+			th:classappend="${currentPage == 1} ? 'disabled'"><a
+			class="page-link"
+			th:href="${currentPage > 1} ? @{'/User/Order?tab=' + ${tab}+'&pageNo=' + ${currentPage-1}} : '#'"
+			aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+		</a></li>
+
+		<!-- Hiển thị các số trang -->
+		<li class="page-item" th:if="${currentPage > 3}"><a
+			class="page-link" th:href="@{'/User/Order?tab=' + ${tab}+'&pageNo=' + 1}">1</a></li>
+		<li class="page-item disabled" th:if="${currentPage > 4}"><a
+			class="page-link">...</a></li>
+
+		<!-- Hiển thị trang trước, trang hiện tại và trang tiếp theo -->
+		<li class="page-item"
+			th:each="i : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+			th:if="${i >= 1 and i <= totalPages}"
+			th:classappend="${i == currentPage} ? 'active'"><a
+			class="page-link" th:href="@{'/User/Order?tab=' + ${tab}+'&pageNo=' + ${i}}"
+			th:text="${i}"></a></li>
+
+		<li class="page-item disabled"
+			th:if="${currentPage < totalPages - 3}"><a
+			class="page-link">...</a></li>
+		<li class="page-item" th:if="${currentPage < totalPages - 2}">
+			<a class="page-link"
+			th:href="@{'/User/Order?tab=' + ${tab}+'&pageNo=' + ${totalPages}}"
+			th:text="${totalPages}"></a>
+		</li>
+
+		<!-- Nút "Next" -->
+		<li class="page-item"
+			th:classappend="${currentPage == totalPages} ? 'disabled'">
+			<a class="page-link"
+			th:href="${currentPage < totalPages} ? @{'/User/Order?tab=' + ${tab}+'&pageNo=' + ${currentPage+1}} : '#'"
+			aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+		</a>
+		</li>
+	</ul>
+</nav>
+<footer th:replace="~{User/fragments/footer::footer}"></footer>
+</body>
+</html>
