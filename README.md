@@ -57,7 +57,7 @@ Trước khi triển khai, đảm bảo bạn đã cài đặt các công cụ v
    git clone https://github.com/MinhTrung9443/BaoMatWeb.git
    ```
 ### 6.3. Cấu hình cơ sở dữ liệu
- **Tạo database trong SQL Server**
+ **Tạo database trong SQL Server**:
 Cập nhật application.properties:
  ```bash
 spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=OneShop
