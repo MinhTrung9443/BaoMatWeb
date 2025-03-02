@@ -45,11 +45,11 @@ Hệ thống sử dụng **JPA** và **Spring Security** để đảm bảo xác
 ## 6. Hướng dẫn cài đặt
 ### 6.1. Yêu cầu cài đặt
 Trước khi triển khai, đảm bảo bạn đã cài đặt các công cụ và môi trường sau:
-- **Spring tool suite, Eclipse hoặc IDE**
 - **Java Development Kit (JDK) 21**
 - **Apache Maven**
 - **SQL Server**
 - **Apache Tomcat (nếu không sử dụng embedded server của Spring Boot)**
+- **Spring tool suite, Eclipse hoặc IDE**
 
 ### 6.2. Cài đặt
 **Clone repository**:  
