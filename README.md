@@ -45,18 +45,18 @@ Hệ thống sử dụng **JPA** và **Spring Security** để đảm bảo xác
 ## 6. Hướng dẫn cài đặt
 ### 6.1. Yêu cầu cài đặt
 Trước khi triển khai, đảm bảo bạn đã cài đặt các công cụ và môi trường sau:
-- **Spring tool suite, Eclipse hoặc IDE"**
+- **Spring tool suite, Eclipse hoặc IDE**
 - **Java Development Kit (JDK) 21**
 - **Apache Maven**
 - **SQL Server**
 - **Apache Tomcat (nếu không sử dụng embedded server của Spring Boot)**
 
 ### 6.2. Cài đặt
-1. **Clone repository**:  
+**Clone repository**:  
    ```bash
-   git clone https://github.com/MinhTrung9443/WebProject.git
-### 6.3 Cấu hình cơ sở dữ liệu
-1. **Tạo database trong SQL Server**
+   git clone https://github.com/MinhTrung9443/BaoMatWeb.git
+### 6.3. Cấu hình cơ sở dữ liệu
+ **Tạo database trong SQL Server**
 Cập nhật application.properties:
 spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=OneShop
 spring.datasource.username=your_username
