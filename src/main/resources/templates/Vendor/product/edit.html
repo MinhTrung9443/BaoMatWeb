@@ -178,7 +178,10 @@ label {
 							name="warehouse_date_first"
 							th:value="${productRequestDTO.warehouse_date_first}" required>
 					</div>
-
+					<div class="mb-3">
+						<label for="files">Chọn ảnh sản phẩm</label> <input type="file"
+							id="files" name="files" multiple>
+					</div>
 					<button type="submit" class="btn btn-success w-100">Cập
 						nhật sản phẩm</button>
 				</form>
