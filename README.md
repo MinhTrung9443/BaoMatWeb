@@ -42,15 +42,31 @@ Hệ thống sử dụng **JPA** và **Spring Security** để đảm bảo xác
 
 ---
 
-## 6. Cách triển khai dự án
+## 6. Hướng dẫn cài đặt
 ### 6.1. Yêu cầu cài đặt
 Trước khi triển khai, đảm bảo bạn đã cài đặt các công cụ và môi trường sau:
 - **Java Development Kit (JDK) 21**
 - **Apache Maven**
+- **Spring tool suite, Eclipse hoặc IDE**
 - **SQL Server**
 - **Apache Tomcat (nếu không sử dụng embedded server của Spring Boot)**
 
-### 6.2. Hướng dẫn cài đặt
-1. **Clone repository**:  
+
+### 6.2. Cài đặt
+**Clone repository**:  
    ```bash
-   git clone https://github.com/MinhTrung9443/WebProject.git
+   git clone https://github.com/MinhTrung9443/BaoMatWeb.git
+   ```
+### 6.3. Cấu hình cơ sở dữ liệu
+**Tạo database trong SQL Server**:
+ Cập nhật application.properties:
+ ```bash
+spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=WebProject
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+ ```
+🔥 ⭐
+
+
+
