@@ -66,17 +66,18 @@ public class LoginController {
             // Sinh JWT
             String jwt = jwtService.generateToken(username);
             System.out.println(jwt);
-            // Lưu JWT vào cookie (hoặc có thể lưu vào session, tùy yêu cầu)
             Cookie jwtCookie = new Cookie("JWT_TOKEN", jwt);
-            jwtCookie.setHttpOnly(true); // Bảo mật, không cho JS truy cập
+            jwtCookie.setHttpOnly(true);
+            jwtCookie.setSecure(true);
             jwtCookie.setPath("/");
-            jwtCookie.setMaxAge("on".equals(rememberMe) ? 60 * 60 : 30 * 60); // 1 giờ hoặc 30 phút
+            jwtCookie.setMaxAge("on".equals(rememberMe) ? 60 * 60 : 30 * 60);
+            jwtCookie.setAttribute("SameSite", "Strict");
             response.addCookie(jwtCookie);
 
             return "redirect:/waiting";
         } catch (Exception e) {
         	e.printStackTrace(); // thêm dòng này
-            return "redirect:/login?error=true";
+        	return "redirect:/waiting";
         }
     }
 
