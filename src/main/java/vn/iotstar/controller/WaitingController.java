@@ -18,28 +18,42 @@ public class WaitingController {
 	private IAccountService accountService;
 	@GetMapping("/waiting")
 	public ModelAndView waiting(ModelMap model, HttpSession session, RedirectAttributes redirectAttributes) {
+		// Get authentication from SecurityContext
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName(); // Lấy username
-		System.out.println("dang trong waiting: " + username);
-		
-		Account account = accountService.findByUsername(username);
-		session.setAttribute("account", account);
-		int roleId = account.getRole().getRoleId();
+        // Check if user is authenticated
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getName() == null) {
+            redirectAttributes.addFlashAttribute("error", "Please log in to continue.");
+            return new ModelAndView("redirect:/login", model);
+        }
 
-		if (roleId == 1) {
-			return new ModelAndView("redirect:/Admin", model);
+        String username = authentication.getName();
+        System.out.println("In waiting: " + username);
 
-		} else if (roleId == 2) {
+        // Fetch account details
+        Account account = accountService.findByUsername(username);
+        if (account == null || account.getRole() == null) {
+            redirectAttributes.addFlashAttribute("error", "Account not found or invalid role.");
+            return new ModelAndView("redirect:/login", model);
+        }
 
-			return new ModelAndView("redirect:/User", model);
+        // Optionally store account in session (avoid if using JWT for stateless auth)
+        session.setAttribute("account", account);
 
-		} else if (roleId == 3) {
-			return new ModelAndView("redirect:/Vendor", model);
-		} else if (roleId == 4) {
-			return new ModelAndView("redirect:/Shipper", model);
-		} else {
-			return new ModelAndView("redirect:/", model);
-		}
-	}
+        // Redirect based on role
+        int roleId = account.getRole().getRoleId();
+        switch (roleId) {
+            case 1:
+                return new ModelAndView("redirect:/Admin", model);
+            case 2:
+                return new ModelAndView("redirect:/User", model);
+            case 3:
+                return new ModelAndView("redirect:/Vendor", model);
+            case 4:
+                return new ModelAndView("redirect:/Shipper", model);
+            default:
+                redirectAttributes.addFlashAttribute("error", "Invalid role.");
+                return new ModelAndView("redirect:/", model);
+        }
+    }
 }

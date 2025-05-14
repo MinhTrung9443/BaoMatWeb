@@ -18,12 +18,16 @@ public class UserServiceImpl implements UserDetailsService{
 	private IAccountService repo;
 	@Autowired
 	private IUserService userService;
+	
+	private static int count = 0;
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
 		Account account = repo.findByUsername(username);
 		Person user = userService.findByAccountUsername(username);
 		if (account == null)
 		{
+			count += 1;
 			throw new UsernameNotFoundException("Could not find user");
 		}
 		

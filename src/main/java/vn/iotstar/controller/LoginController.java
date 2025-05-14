@@ -2,18 +2,28 @@ package vn.iotstar.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import vn.iotstar.entity.Account;
 import vn.iotstar.entity.Person;
 import vn.iotstar.service.IAccountService;
 import vn.iotstar.service.IEmailService; // Giả sử bạn có một service gửi email
 import vn.iotstar.service.IPersonService;
+import vn.iotstar.service.JwtService;
 import vn.iotstar.service.impl.UserService;
 
 @Controller
@@ -31,7 +41,8 @@ public class LoginController {
 	private AuthenticationManager authenticationManager;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
+	@Autowired
+	private JwtService jwtService;
     @Autowired
     private UserService userservice;
 
@@ -42,39 +53,33 @@ public class LoginController {
 
 	
 
-	/*
-	 * @PostMapping("/login") public String processLogin(@RequestParam("username")
-	 * String username, @RequestParam("password") String password,
-	 * 
-	 * @RequestParam(value = "remember-me", required = false) String rememberMe,
-	 * HttpServletRequest request, HttpServletResponse response) { Authentication
-	 * authentication = authenticationManager.authenticate(new
-	 * UsernamePasswordAuthenticationToken(username, password));
-	 * 
-	 * SecurityContextHolder.getContext().setAuthentication(authentication);
-	 * System.out.println("Current User: " +
-	 * SecurityContextHolder.getContext().getAuthentication().getName());
-	 * System.out.println("Current Role: " +
-	 * SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-	 * System.out.println(authentication.toString());
-	 * 
-	 * Account account = accountSer.findByUsername(username);
-	 * 
-	 * if (account != null && passwordEncoder.matches(password,
-	 * account.getPassword())) {
-	 * 
-	 * HttpSession session = request.getSession(); session.setAttribute("account",
-	 * account);
-	 * 
-	 * System.out.println("dang nhap dung roi");
-	 * 
-	 * if ("on".equals(rememberMe)) {
-	 * 
-	 * Cookie cookie = new Cookie("rememberMe", account.getUsername());
-	 * cookie.setMaxAge(10 * 60); cookie.setPath("/"); response.addCookie(cookie); }
-	 * 
-	 * return "redirect:/waiting"; } else { return "redirect:/login?error=true"; } }
-	 */
+	@PostMapping("/login")
+	public String processLogin(@RequestParam("username") String username,
+	                          @RequestParam("password") String password,
+	                          @RequestParam(value = "remember-me", required = false) String rememberMe,
+	                          HttpServletRequest request, HttpServletResponse response) {
+		try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+            
+            // Sinh JWT
+            String jwt = jwtService.generateToken(username);
+            System.out.println(jwt);
+            // Lưu JWT vào cookie (hoặc có thể lưu vào session, tùy yêu cầu)
+            Cookie jwtCookie = new Cookie("JWT_TOKEN", jwt);
+            jwtCookie.setHttpOnly(true); // Bảo mật, không cho JS truy cập
+            jwtCookie.setPath("/");
+            jwtCookie.setMaxAge("on".equals(rememberMe) ? 60 * 60 : 30 * 60); // 1 giờ hoặc 30 phút
+            response.addCookie(jwtCookie);
+
+            return "redirect:/waiting";
+        } catch (Exception e) {
+        	e.printStackTrace(); // thêm dòng này
+            return "redirect:/login?error=true";
+        }
+    }
+
 
 	@GetMapping("/forgot-password")
 	public String showForgotPasswordPage() {
