@@ -54,6 +54,15 @@ public class RegisterController {
 	@PostMapping("/process-register")
 	public String processRegister(@ModelAttribute UserRegistrationDTO userDTO, Model model,HttpSession session) {
 		boolean check = false;
+		
+		// Kiểm tra độ mạnh của mật khẩu
+	    String password = userDTO.getPassword();
+	    String passwordError = validatePassword(password);
+	    if (passwordError != null) {
+	        model.addAttribute("errorPassword", passwordError);
+	        return "Guest/register";
+	    }
+		
 		if(accountService.findByUsername(userDTO.getUsername())!= null)
 		{
 			model.addAttribute("errorUsername", "Tên đăng nhập đã tồn tại!");
@@ -170,6 +179,45 @@ public class RegisterController {
 
 		}
 		return false; // OTP không hợp lệ hoặc hết hạn
+	}
+	
+	// Hàm kiểm tra độ mạnh mật khẩu
+	private String validatePassword(String password) {
+	    // Kiểm tra null hoặc rỗng
+	    if (password == null || password.trim().isEmpty()) {
+	        return "Mật khẩu không được để trống!";
+	    }
+
+	    // Kiểm tra độ dài tối thiểu
+	    if (password.length() < 8) {
+	        return "Mật khẩu phải có ít nhất 8 ký tự!";
+	    }
+
+	    // Kiểm tra khoảng trắng
+	    if (password.contains(" ")) {
+	        return "Mật khẩu không được chứa khoảng trắng!";
+	    }
+
+	    // Kiểm tra các loại ký tự
+	    String upperCaseRegex = ".*[A-Z].*";
+	    String lowerCaseRegex = ".*[a-z].*";
+	    String digitRegex = ".*\\d.*";
+	    String specialCharRegex = ".*[!@#$%^&*(),.?\":{}|<>].*";
+
+	    if (!Pattern.matches(upperCaseRegex, password)) {
+	        return "Mật khẩu phải chứa ít nhất 1 chữ cái in hoa!";
+	    }
+	    if (!Pattern.matches(lowerCaseRegex, password)) {
+	        return "Mật khẩu phải chứa ít nhất 1 chữ cái thường!";
+	    }
+	    if (!Pattern.matches(digitRegex, password)) {
+	        return "Mật khẩu phải chứa ít nhất 1 số!";
+	    }
+	    if (!Pattern.matches(specialCharRegex, password)) {
+	        return "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt (ví dụ: !@#$%)!";
+	    }
+
+	    return null; // Mật khẩu hợp lệ
 	}
 
 }
