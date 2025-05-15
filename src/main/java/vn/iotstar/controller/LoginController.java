@@ -59,28 +59,62 @@ public class LoginController {
 	                          @RequestParam("password") String password,
 	                          @RequestParam(value = "remember-me", required = false) String rememberMe,
 	                          HttpServletRequest request, HttpServletResponse response) {
-		try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
-            
-            // Sinh JWT
-            String jwt = jwtService.generateToken(username);
-            System.out.println(jwt);
-            Cookie jwtCookie = new Cookie("JWT_TOKEN", jwt);
-            jwtCookie.setHttpOnly(true);
-            jwtCookie.setSecure(true);
-            jwtCookie.setPath("/");
-            jwtCookie.setMaxAge("on".equals(rememberMe) ? 60 * 60 : 30 * 60);
-            jwtCookie.setAttribute("SameSite", "Strict");
-            response.addCookie(jwtCookie);
+	    HttpSession session = request.getSession();
+	    
+	    // Đọc số lần đăng nhập sai từ session
+	    Integer loginAttempts = (Integer) session.getAttribute("LOGIN_ATTEMPTS");
+	    if (loginAttempts == null) {
+	        loginAttempts = 0;
+	    }
 
-            return "redirect:/waiting";
-        } catch (Exception e) {
-        	e.printStackTrace(); // thêm dòng này
-        	return "redirect:/waiting";
-        }
-    }
+	    // Kiểm tra nếu vượt quá 3 lần thử
+	    if (loginAttempts >= 3) {
+	        // Kiểm tra thời gian khóa (1 tiếng)
+	        Long lockTime = (Long) session.getAttribute("LOCK_TIME");
+	        if (lockTime != null && System.currentTimeMillis() < lockTime) {
+	            return "redirect:/waiting";
+	        } else {
+	            // Hết thời gian khóa, reset attempts
+	            loginAttempts = 0;
+	            session.setAttribute("LOGIN_ATTEMPTS", loginAttempts);
+	            session.removeAttribute("LOCK_TIME");
+	        }
+	    }
+
+	    try {
+	        Authentication authentication = authenticationManager.authenticate(
+	                new UsernamePasswordAuthenticationToken(username, password)
+	        );
+	        
+	        // Đăng nhập thành công: reset login attempts về 0
+	        session.setAttribute("LOGIN_ATTEMPTS", 0);
+	        session.removeAttribute("LOCK_TIME");
+
+	        // Sinh JWT
+	        String jwt = jwtService.generateToken(username);
+	        Cookie jwtCookie = new Cookie("JWT_TOKEN", jwt);
+	        jwtCookie.setHttpOnly(true);
+	        jwtCookie.setSecure(true);
+	        jwtCookie.setPath("/");
+	        jwtCookie.setMaxAge("on".equals(rememberMe) ? 60 * 60 : 30 * 60);
+	        jwtCookie.setAttribute("SameSite", "Strict");
+	        response.addCookie(jwtCookie);
+
+	        return "redirect:/waiting";
+	    } catch (Exception e) {
+	        // Đăng nhập thất bại: tăng số lần thử
+	        loginAttempts++;
+	        session.setAttribute("LOGIN_ATTEMPTS", loginAttempts);
+	        
+	        // Nếu đạt 3 lần thất bại, đặt thời gian khóa
+	        if (loginAttempts >= 3) {
+	            session.setAttribute("LOCK_TIME", System.currentTimeMillis() + 60 * 60 * 1000); // 1 tiếng
+	        }
+
+	        e.printStackTrace();
+	        return "redirect:/waiting";
+	    }
+	}
 
 
 	@GetMapping("/forgot-password")
