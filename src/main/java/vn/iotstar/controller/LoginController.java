@@ -97,7 +97,6 @@ public class LoginController {
 	        jwtCookie.setSecure(true);
 	        jwtCookie.setPath("/");
 	        jwtCookie.setMaxAge("on".equals(rememberMe) ? 60 * 60 : 30 * 60);
-	        jwtCookie.setAttribute("SameSite", "Strict");
 	        response.addCookie(jwtCookie);
 
 	        return "redirect:/waiting";
