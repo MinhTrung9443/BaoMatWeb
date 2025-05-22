@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
-import vn.iotstar.service.impl.CustomerUserDetailsService;
+import vn.iotstar.service.impl.*;
 
 @Configuration
 @EnableWebSecurity
