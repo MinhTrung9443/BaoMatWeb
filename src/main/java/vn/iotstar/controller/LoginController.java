@@ -68,7 +68,7 @@ public class LoginController {
             System.out.println(jwt);
             Cookie jwtCookie = new Cookie("JWT_TOKEN", jwt);
             jwtCookie.setHttpOnly(true);
-            jwtCookie.setSecure(true);
+            jwtCookie.setSecure(false);
             jwtCookie.setPath("/");
             jwtCookie.setMaxAge("on".equals(rememberMe) ? 60 * 60 : 30 * 60);
             jwtCookie.setAttribute("SameSite", "Strict");
