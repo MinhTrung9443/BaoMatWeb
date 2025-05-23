@@ -28,7 +28,7 @@ public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int categoryId;
-	@Column(columnDefinition = "nvarchar(max)")
+	@Column(columnDefinition = "text")
 	private String categoryName;
 	private int active;
 	

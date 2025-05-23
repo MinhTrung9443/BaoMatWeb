@@ -26,7 +26,7 @@ public class ProductFeedback implements Serializable{/**
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	private int feedbackId;
-	@Column(columnDefinition = "nvarchar(max)")
+	@Column(columnDefinition = "text")
 	private String comment;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
 	private LocalDateTime reviewDate;

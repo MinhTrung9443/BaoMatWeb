@@ -1,314 +1,354 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="https//www.thymeleaf.org/thymeleaf-extra-springsecurity6">
+<html lang="vi" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"> <!-- Sửa lại namespace sec nếu bạn dùng bản cũ hơn -->
 
 
 <!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
-    <meta name="author" content="p-themes">
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="/assets/images/icons/site.html">
-    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Molla">
-    <meta name="application-name" content="Molla">
-    <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
-    <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <!-- Main CSS File -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Tài Khoản Của Tôi - Molla</title> <!-- Sửa title -->
+	<meta name="keywords" content="HTML5 Template">
+	<meta name="description" content="Molla - Bootstrap eCommerce Template">
+	<meta name="author" content="p-themes">
+	<!-- Favicon: sử dụng th:href cho tất cả -->
+	<link rel="apple-touch-icon" sizes="180x180" th:href="@{/assets/images/icons/apple-touch-icon.png}">
+	<link rel="icon" type="image/png" sizes="32x32" th:href="@{/assets/images/icons/favicon-32x32.png}">
+	<link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/images/icons/favicon-16x16.png}">
+	<link rel="manifest" th:href="@{/assets/images/icons/site.webmanifest}"> <!-- Hoặc site.html -->
+	<link rel="mask-icon" th:href="@{/assets/images/icons/safari-pinned-tab.svg}" color="#666666">
+	<link rel="shortcut icon" th:href="@{/assets/images/icons/favicon.ico}">
+	<meta name="apple-mobile-web-app-title" content="Molla">
+	<meta name="application-name" content="Molla">
+	<meta name="msapplication-TileColor" content="#cc9966">
+	<meta name="msapplication-config" th:href="@{/assets/images/icons/browserconfig.xml}">
+	<meta name="theme-color" content="#ffffff">
+	<!-- Plugins CSS File -->
+	<link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+	<!-- Main CSS File -->
+	<link rel="stylesheet" th:href="@{/assets/css/style.css}">
 </head>
 
 <body>
-    <div class="page-wrapper">
+<div class="page-wrapper">
 	<header th:replace="~{User/fragments/header::header}"></header>
-        <main class="main"> 
-        <div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
-        		<div class="container">
-        			<h1 class="page-title">My Account<span>Shop</span></h1>
-        		</div><!-- End .container -->
-        	</div><!-- End .page-header -->
-            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
-                <div class="container">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/User">Trang chủ</a></li>
-                        <li class="breadcrumb-item"><a href="#">Cửa hàng</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Tài khoản của tôi</li>
-                    </ol>
-                </div><!-- End .container -->
-            </nav><!-- End .breadcrumb-nav -->
+	<main class="main">
+		<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')"> <!-- Cân nhắc dùng th:style="'background-image: url(' + @{/assets/images/page-header-bg.jpg} + ');'" -->
+			<div class="container">
+				<h1 class="page-title">Tài Khoản Của Tôi<span>Cửa Hàng</span></h1> <!-- Sửa lại Shop cho đúng nghĩa -->
+			</div><!-- End .container -->
+		</div><!-- End .page-header -->
+		<nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+			<div class="container">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{/User}">Trang chủ</a></li> <!-- Dùng th:href -->
+					<li class="breadcrumb-item"><a href="#">Cửa hàng</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Tài khoản của tôi</li>
+				</ol>
+			</div><!-- End .container -->
+		</nav><!-- End .breadcrumb-nav -->
 
-            <div class="page-content">
-            	<div class="dashboard">
-	                <div class="container">
-	                	<div class="row">
-	                		<aside class="col-md-4 col-lg-3">
-	                			<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
-								    <li class="nav-item">
-								        <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Điều hướng</a>
-								    </li>
-								    <li class="nav-item">
-								        <a href="/User/Order" class="nav-link" id="tab-orders-link" aria-selected="true">Đơn hàng</a>
-								    </li>
-								   
-								    <li class="nav-item">
-								        <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Địa chỉ</a>
-								    </li>
-								    <li class="nav-item">
-								        <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Thông tin tài khoản</a>
-								    </li>
-								</ul>
-	                		</aside><!-- End .col-lg-3 -->
+		<div class="page-content">
+			<div class="dashboard">
+				<div class="container">
+					<div class="row">
+						<aside class="col-md-4 col-lg-3">
+							<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+								<li class="nav-item">
+									<a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Điều hướng</a>
+								</li>
+								<li class="nav-item">
+									<a th:href="@{/User/Order}" class="nav-link" id="tab-orders-link" aria-selected="false">Đơn hàng</a> <!-- aria-selected="false" cho tab không active ban đầu -->
+								</li>
 
-	                		<div class="col-md-8 col-lg-9">
-	                			<div class="tab-content">
-								    <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
-								    	<p>Xin chào <span class="font-weight-normal text-dark" th:text="${user.fullname}"></span> (not <span class="font-weight-normal text-dark" th:text="${user.fullname}">User</span>? <a href="#">Đăng xuất</a>) 
-								    	<br>
-								    	Tại thanh điều hướng này, bạn có thể xem <a href="#tab-orders" class="tab-trigger-link link-underline">các đơn hàng</a>, Quản lý <a href="#tab-address" class="tab-trigger-link">Địa chỉ cá nhân</a>, and <a href="#tab-account" class="tab-trigger-link">Thay đổi mật khẩu và các thông tin cá nhân khác</a>.</p>
-								    </div><!-- .End .tab-pane -->
-		
-								    <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
-								    	<p>Địa chỉ dưới đây được sử dụng khi mua hàng.</p>
+								<li class="nav-item">
+									<a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Địa chỉ</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Thông tin tài khoản</a>
+								</li>
+								<!-- Nút đăng xuất chuẩn hơn -->
+								<li class="nav-item">
+									<form th:action="@{/logout}" method="post" id="logoutFormUserDashboard" style="display: none;"></form>
+									<a class="nav-link" href="#" onclick="document.getElementById('logoutFormUserDashboard').submit(); return false;">Đăng xuất</a>
+								</li>
+							</ul>
+						</aside><!-- End .col-lg-3 -->
 
-										<div class="row">
-											<!-- Trong phần hiển thị danh sách địa chỉ -->
-											<div class="col-lg-6"
-											     th:if="${user.address != null and user.address.size() > 0}"
-											     th:each="add : ${user.address}">
-											    <div class="card card-dashboard">
-											        <div class="card-body">
-											            <input type="text" th:id="'addressId-' + ${add.addressId}" hidden="hidden" th:value="${add.addressId}">
-											            
-											            <label>Loại địa chỉ (Nhà/trọ/cơ quan)</label>
-											            <br>
-											            <input type="text" th:id="'addressType-' + ${add.addressId}" class="card-title" th:value="${add.addressType}" disabled="disabled" />
-											            
-											            <label>Địa chỉ chi tiết:</label>
-											            <br>
-											            <input type="text" th:id="'addressDetail-' + ${add.addressId}" th:value="${add.addressDetail}" disabled="disabled" />
-											            
-											           <a href="#" 
-													   th:id="'editLink-' + ${add.addressId}" 
-													   th:onclick="'enableEdit(' + ${add.addressId} + ')'">Sửa <i class="icon-edit"></i></a>
-													   
-													   <a href="#" 
-													   th:id="'deleteLink' + ${add.addressId}" 
-													   th:onclick="'deleteLink(' + ${add.addressId} + ')'">Xóa <i class="icon-edit"></i></a>
-											            <!-- Nút OK, chỉ hiển thị khi chỉnh sửa -->
-											            <button 
-														    th:id="'okButton-' + ${add.addressId}" 
-														    th:style="'display: none;'" 
-														    th:onclick="'saveChanges(' + ${add.addressId} + ')'" >
-														    OK
-														</button>
-											        </div>
-											    </div>
-											</div>
+						<div class="col-md-8 col-lg-9">
+							<div class="tab-content">
+								<div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+									<p>Xin chào <span class="font-weight-normal text-dark" th:if="${user != null}" th:text="${user.fullname}"></span>
+										(không phải <span class="font-weight-normal text-dark" th:if="${user != null}" th:text="${user.fullname}">User</span>?
+										<a href="#" onclick="document.getElementById('logoutFormUserDashboard').submit(); return false;">Đăng xuất</a>)
+										<br>
+										Tại thanh điều hướng này, bạn có thể xem <a href="#tab-orders" class="tab-trigger-link link-underline">các đơn hàng</a>, Quản lý <a href="#tab-address" class="tab-trigger-link">Địa chỉ cá nhân</a>, và <a href="#tab-account" class="tab-trigger-link">Thay đổi mật khẩu và các thông tin cá nhân khác</a>.</p>
+								</div><!-- .End .tab-pane -->
 
-											<!-- End .col-lg-6 -->
-											<div id="newAddressForm" style="display: none;"  class="col-lg-6">
-												<div class="card card-dashboard">
-												    <div class="card-body">
-												    <label>Thêm địa chỉ mới</label> <br>
-												    	<input type="text" id="newAddressType" placeholder="Nhập loại địa chỉ" />
-													    <input type="text" id="newAddressDetail" placeholder="Nhập chi tiết địa chỉ" />
-													    <button id="saveButton" th:onclick="AddNewAddress()">OK</button>
-													    <button id="cancelButton">Hủy</button>
-												    </div>
+								<div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+									<p>Địa chỉ dưới đây được sử dụng khi mua hàng.</p>
+									<div class="row">
+										<div class="col-lg-6"
+											 th:if="${user != null and user.address != null and user.address.size() > 0}"
+											 th:each="add : ${user.address}">
+											<div class="card card-dashboard">
+												<div class="card-body">
+													<input type="hidden" th:id="'addressId-' + ${add.addressId}" th:value="${add.addressId}">
+
+													<label th:for="'addressType-' + ${add.addressId}">Loại địa chỉ (Nhà/trọ/cơ quan)</label>
+													<input type="text" th:id="'addressType-' + ${add.addressId}" class="form-control mb-2" th:value="${add.addressType}" disabled="disabled" />
+
+													<label th:for="'addressDetail-' + ${add.addressId}">Địa chỉ chi tiết:</label>
+													<input type="text" th:id="'addressDetail-' + ${add.addressId}" class="form-control mb-2" th:value="${add.addressDetail}" disabled="disabled" />
+
+													<a href="#" class="btn btn-outline-primary btn-sm"
+													   th:id="'editLink-' + ${add.addressId}"
+													   th:onclick="'enableEdit(' + ${add.addressId} + '); return false;'">Sửa <i class="icon-edit"></i></a>
+
+													<a href="#" class="btn btn-outline-danger btn-sm ml-2"
+													   th:id="'deleteLink' + ${add.addressId}"
+													   th:onclick="'deleteAddress(' + ${add.addressId} + '); return false;'">Xóa <i class="icon-trash"></i></a>
+
+													<button class="btn btn-success btn-sm ml-2"
+															th:id="'okButton-' + ${add.addressId}"
+															style="display: none;"
+															th:onclick="'saveChanges(' + ${add.addressId} + '); return false;'">
+														OK
+													</button>
 												</div>
-												<!-- End .card-dashboard -->
 											</div>
-											<!-- End .col-lg-6 -->
 										</div>
-										<!-- End .row -->
-										<div>
-											<button id="addButton" class="btn btn-outline-primary-2"><span>Thêm
-													địa chỉ</span><i class="icon-long-arrow-right"></i></button>
+
+										<div id="newAddressFormContainer" class="col-lg-6" style="display: none;">
+											<div class="card card-dashboard">
+												<div class="card-body">
+													<h5 class="card-title">Thêm địa chỉ mới</h5>
+													<label for="newAddressType">Loại địa chỉ:</label>
+													<input type="text" id="newAddressType" class="form-control mb-2" placeholder="Ví dụ: Nhà riêng, Công ty" />
+													<label for="newAddressDetail">Địa chỉ chi tiết:</label>
+													<input type="text" id="newAddressDetail" class="form-control mb-2" placeholder="Ví dụ: Số 1, Đường ABC, Phường XYZ..." />
+													<button id="saveNewAddressButton" class="btn btn-primary btn-sm">Lưu</button>
+													<button id="cancelNewAddressButton" class="btn btn-light btn-sm ml-2">Hủy</button>
+												</div>
+											</div>
 										</div>
-									</div><!-- .End .tab-pane -->
+									</div>
+									<div>
+										<button id="showAddAddressFormButton" class="btn btn-outline-primary-2 mt-3"><span>Thêm địa chỉ</span><i class="icon-long-arrow-right"></i></button>
+									</div>
+								</div><!-- .End .tab-pane -->
 
-								    <div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
-								    	<form action="/User/editProfile" th:object="${user}" method="post">
-								    	<label th:if="${ErrUpdateProfile}" th:text="${ErrUpdateProfile}" style="color: red"></label>
-								    	<input type="text" class="form-control" name="id" th:field="*{id}" hidden="hidden" required>
-			                				<label>Họ tên *</label>
-		            						<input type="text" class="form-control" name="fullname" th:field="*{fullname}" required>
+								<div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+									<form action="/User/editProfile" th:object="${user}" method="post"> <!-- Giữ nguyên th:object để các field khác hoạt động -->
+										<div th:if="${param.successProfileUpdate}" class="alert alert-success">Cập nhật thông tin thành công!</div>
+										<div th:if="${param.errorProfileUpdate}" class="alert alert-danger" th:text="${session.SPRING_SECURITY_LAST_EXCEPTION != null ? session.SPRING_SECURITY_LAST_EXCEPTION.message : 'Có lỗi xảy ra khi cập nhật.'}"></div>
+										<label th:if="${ErrUpdateProfile != null}" th:text="${ErrUpdateProfile}" style="color: red"></label>
 
-			                				<label>Số điện thoại *</label>
-		            						<input type="text" class="form-control" name="phone" th:field="*{phone}" required>
+										<input type="hidden" class="form-control" name="id" th:field="*{id}" required>
 
-		            						<label>Giới tính *</label>
-		            						<select class="form-control" name="gender" th:field="*{gender}" required> 
-		            							<option value="1">Nam</option>
-		            							<option value="0">Nữ</option>
-		            						</select>
-		            					
-		                					<label>Email *</label>
-		        							<input type="email" class="form-control" th:field="*{email}" required>
-		                					<button type="submit" class="btn btn-outline-primary-2">
-			                					<span>Lưu</span>
-			            						<i class="icon-long-arrow-right"></i>
-			                				</button>
-			                			</form>
-								    </div><!-- .End .tab-pane -->
-								</div>
-	                		</div><!-- End .col-lg-9 -->
-	                	</div><!-- End .row -->
-	                </div><!-- End .container -->
-                </div><!-- End .dashboard -->
-            </div><!-- End .page-content -->
+										<div class="form-group">
+											<label for="fullname">Họ tên *</label>
+											<input type="text" id="fullname" class="form-control" name="fullname" th:field="*{fullname}" required>
+										</div>
 
-        </main>
-        	
+										<div class="form-group">
+											<label for="phone">Số điện thoại *</label>
+											<input type="text" id="phone" class="form-control" name="phone" th:field="*{phone}" required>
+										</div>
 
+										<div class="form-group">
+											<label for="gender">Giới tính *</label>
+											<select id="gender" class="form-control" name="gender" th:field="*{gender}" required>
+												<option value="1">Nam</option>
+												<option value="0">Nữ</option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label for="userEmailInput">Email *</label>
+											<!-- Bỏ th:field, thêm id, giữ name="email" -->
+											<input type="email" id="userEmailInput" class="form-control" name="email" required>
+										</div>
+
+										<button type="submit" class="btn btn-outline-primary-2">
+											<span>Lưu Thay Đổi</span> <!-- Sửa text cho rõ ràng -->
+											<i class="icon-long-arrow-right"></i>
+										</button>
+									</form>
+								</div><!-- .End .tab-pane -->
+							</div>
+						</div><!-- End .col-lg-9 -->
+					</div><!-- End .row -->
+				</div><!-- End .container -->
+			</div><!-- End .dashboard -->
+		</div><!-- End .page-content -->
+	</main>
 	<footer th:replace="~{User/fragments/footer::footer}"></footer>
-	</div>
+</div>
 
-    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
-<script>
-//Hàm bật chế độ chỉnh sửa cho một địa chỉ
-function enableEdit(addressId) {
-    // Bật chỉnh sửa cho các trường input
-    document.getElementById('addressType-' + addressId).disabled = false;
-    document.getElementById('addressDetail-' + addressId).disabled = false;
+<!-- Phần JavaScript -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/jquery.hoverIntent.min.js}"></script>
+<script th:src="@{/assets/js/jquery.waypoints.min.js}"></script>
+<script th:src="@{/assets/js/superfish.min.js}"></script>
+<script th:src="@{/assets/js/owl.carousel.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script> <!-- Main JS nên ở cuối cùng sau các thư viện khác -->
 
-    // Hiển thị nút OK
-    document.getElementById('okButton-' + addressId).style.display = 'inline-block';
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	document.addEventListener('DOMContentLoaded', function() {
+		// === Xử lý cho Email ở tab Thông tin tài khoản ===
+		var encodedUserEmailFromServer = /*[[${encodedUserEmail}]]*/ null; // Lấy từ model
+		var emailInputElement = document.getElementById('userEmailInput');
 
-    // Ẩn liên kết Edit
-    document.getElementById('editLink-' + addressId).style.display = 'none';
-}
-//Hàm xóa địa chỉ
-function deleteLink(addressId) {
-	// Gửi dữ liệu đến server thông qua AJAX
-    $.ajax({
-        url: '/User/Address/delete',
-        type: 'POST',
-        data: {
-            addressId: addressId,
-        },
-        success: function (response) {
-            alert('Xóa thành công thành công!');
-            window.location.href = '/User/dashboard';
-        },
-        error: function () {
-            alert('Có lỗi xảy ra!');
-        }
-    });
-}
-// Hàm lưu thay đổi cho một địa chỉ
-function saveChanges(addressId) {
-    // Lấy giá trị từ các trường input
-    var addressType = document.getElementById('addressType-' + addressId).value;
-    var addressDetail = document.getElementById('addressDetail-' + addressId).value;
+		if (emailInputElement && encodedUserEmailFromServer && encodedUserEmailFromServer.trim() !== '') {
+			try {
+				var decodedEmail = atob(encodedUserEmailFromServer); // Giải mã Base64
+				emailInputElement.value = decodedEmail;
+			} catch (e) {
+				console.error("Lỗi giải mã email:", e);
+				// Bạn có thể muốn đặt giá trị mặc định hoặc thông báo lỗi nếu cần
+				// emailInputElement.value = "Không thể tải email";
+			}
+		} else if (emailInputElement) {
+			// console.warn("Không có email được mã hóa để hiển thị hoặc input element không tồn tại.");
+			// emailInputElement.placeholder = "Nhập email của bạn"; // Hoặc để trống
+		}
 
-    // Gửi dữ liệu đến server thông qua AJAX
-    $.ajax({
-        url: '/User/Address/edit',
-        type: 'POST',
-        data: {
-            addressId: addressId,
-            addressType: addressType,
-            addressDetail: addressDetail
-        },
-        success: function (response) {
-            alert('Cập nhật thành công!');
-            // Disable các trường input sau khi cập nhật
-            document.getElementById('addressType-' + addressId).disabled = true;
-            document.getElementById('addressDetail-' + addressId).disabled = true;
 
-            // Ẩn nút OK
-            document.getElementById('okButton-' + addressId).style.display = 'none';
+		// === Xử lý cho phần Địa chỉ ===
+		const showAddFormButton = document.getElementById('showAddAddressFormButton');
+		const newAddressFormContainer = document.getElementById('newAddressFormContainer');
+		const saveNewAddressBtn = document.getElementById('saveNewAddressButton');
+		const cancelNewAddressBtn = document.getElementById('cancelNewAddressButton');
+		const newAddressTypeInput = document.getElementById('newAddressType');
+		const newAddressDetailInput = document.getElementById('newAddressDetail');
 
-            // Hiển thị lại liên kết Edit
-            document.getElementById('editLink-' + addressId).style.display = 'inline-block';
-            window.location.href = '/User/dashboard';
-        },
-        error: function () {
-            alert('Có lỗi xảy ra!');
-        }
-    });
-}
+		if (showAddFormButton) {
+			showAddFormButton.addEventListener('click', function(e) {
+				e.preventDefault();
+				if (newAddressFormContainer) newAddressFormContainer.style.display = 'block';
+				this.style.display = 'none'; // Ẩn nút "Thêm địa chỉ"
+			});
+		}
 
-    
- // Lắng nghe sự kiện click vào addButton
-    document.getElementById('addButton').addEventListener('click', function(e) {
-        e.preventDefault(); // Ngừng chuyển hướng mặc định của liên kết
+		if (cancelNewAddressBtn) {
+			cancelNewAddressBtn.addEventListener('click', function(e) {
+				e.preventDefault();
+				if (newAddressFormContainer) newAddressFormContainer.style.display = 'none';
+				if (newAddressTypeInput) newAddressTypeInput.value = '';
+				if (newAddressDetailInput) newAddressDetailInput.value = '';
+				if (showAddFormButton) showAddFormButton.style.display = 'inline-block'; // Hiện lại nút "Thêm địa chỉ"
+			});
+		}
 
-        document.getElementById('newAddressForm').style.display = 'block';
+		if (saveNewAddressBtn) {
+			saveNewAddressBtn.addEventListener('click', function () {
+				var addressType = newAddressTypeInput ? newAddressTypeInput.value.trim() : '';
+				var addressDetail = newAddressDetailInput ? newAddressDetailInput.value.trim() : '';
 
-    });
- 
-    document.getElementById('cancelButton').addEventListener('click', function(e) {
-        e.preventDefault(); // Ngừng chuyển hướng mặc định của liên kết
+				if (!addressType || !addressDetail) {
+					alert('Vui lòng điền đầy đủ thông tin loại địa chỉ và chi tiết địa chỉ!');
+					return;
+				}
 
-        document.getElementById('newAddressForm').style.display = 'none';
-     // Reset giá trị các input
-        document.getElementById('newAddressType').value = '';
-        document.getElementById('newAddressDetail').value = '';
-    });
-    document.getElementById('saveButton').addEventListener('click', function () {
-        // Lấy giá trị từ các trường input
-        var addressType = document.getElementById('newAddressType').value;
-        var addressDetail = document.getElementById('newAddressDetail').value;
+				$.ajax({
+					url: /*[[@{/User/Address/add}]]*/ '/User/Address/add', // Sử dụng @{} để Thymeleaf phân giải URL
+					type: 'POST',
+					data: {
+						newAddressType: addressType,
+						newAddressDetail: addressDetail
+						// Spring Security CSRF token nếu bạn dùng
+						// _csrf: /*[[${_csrf != null ? _csrf.token : ''}]]*/ ''
+					},
+					success: function (response) {
+						alert('Địa chỉ đã được thêm thành công!');
+						// Không reload ngay, có thể cập nhật DOM hoặc để người dùng tự reload
+						// Hoặc reload với tham số để mở tab địa chỉ
+						window.location.href = /*[[@{/User/dashboard}]]*/ '/User/dashboard' + '?tab=address';
+					},
+					error: function (xhr, status, error) {
+						console.error("Lỗi thêm địa chỉ: ", status, error, xhr.responseText);
+						alert('Có lỗi xảy ra khi thêm địa chỉ. Vui lòng thử lại.');
+					}
+				});
+			});
+		}
+	}); // Kết thúc DOMContentLoaded
 
-        // Kiểm tra xem các trường có được nhập đầy đủ không
-        if (!addressType || !addressDetail) {
-            alert('Vui lòng điền đầy đủ thông tin!');
-            return;
-        }
+	// Các hàm enableEdit, deleteAddress, saveChanges nên được khai báo ngoài DOMContentLoaded
+	// để chúng là global và có thể được gọi từ onclick attribute.
 
-        // Thực hiện lưu dữ liệu (gửi dữ liệu đến server thông qua AJAX)
-        $.ajax({
-            url: '/User/Address/add', // URL để xử lý yêu cầu
-            type: 'POST',
-            data: {
-                newAddressType: addressType,
-                newAddressDetail: addressDetail
-            },
-            success: function (response) {
-                alert('Địa chỉ đã được thêm thành công!'); // Hiển thị thông báo thành công
+	function enableEdit(addressId) {
+		document.getElementById('addressType-' + addressId).disabled = false;
+		document.getElementById('addressDetail-' + addressId).disabled = false;
+		const okBtn = document.getElementById('okButton-' + addressId);
+		const editLnk = document.getElementById('editLink-' + addressId);
+		if(okBtn) okBtn.style.display = 'inline-block';
+		if(editLnk) editLnk.style.display = 'none';
+	}
 
-                // Reset các trường input
-                document.getElementById('newAddressType').value = '';
-                document.getElementById('newAddressDetail').value = '';
+	function deleteAddress(addressId) { // Đổi tên hàm để tránh trùng với deleteLink
+		if (!confirm('Bạn có chắc chắn muốn xóa địa chỉ này?')) {
+			return;
+		}
+		$.ajax({
+			url: /*[[@{/User/Address/delete}]]*/ '/User/Address/delete',
+			type: 'POST',
+			data: {
+				addressId: addressId
+				// _csrf: /*[[${_csrf != null ? _csrf.token : ''}]]*/ ''
+			},
+			success: function (response) {
+				alert('Xóa địa chỉ thành công!');
+				window.location.href = /*[[@{/User/dashboard}]]*/ '/User/dashboard' + '?tab=address';
+			},
+			error: function () {
+				alert('Có lỗi xảy ra khi xóa địa chỉ!');
+			}
+		});
+	}
 
-                // Ẩn form thêm địa chỉ
-                $('#newAddressForm').hide();
-                window.location.href = '/User/dashboard';
-            },
-            error: function () {
-                alert('Có lỗi xảy ra, mời đăng nhập lại.');
-            }
-        });
-    });
-    
-    
+	function saveChanges(addressId) {
+		var addressType = document.getElementById('addressType-' + addressId).value;
+		var addressDetail = document.getElementById('addressDetail-' + addressId).value;
 
+		if (!addressType.trim() || !addressDetail.trim()) {
+			alert('Vui lòng không để trống thông tin địa chỉ.');
+			return;
+		}
+
+		$.ajax({
+			url: /*[[@{/User/Address/edit}]]*/ '/User/Address/edit',
+			type: 'POST',
+			data: {
+				addressId: addressId,
+				addressType: addressType,
+				addressDetail: addressDetail
+				// _csrf: /*[[${_csrf != null ? _csrf.token : ''}]]*/ ''
+			},
+			success: function (response) {
+				alert('Cập nhật địa chỉ thành công!');
+				document.getElementById('addressType-' + addressId).disabled = true;
+				document.getElementById('addressDetail-' + addressId).disabled = true;
+				const okBtn = document.getElementById('okButton-' + addressId);
+				const editLnk = document.getElementById('editLink-' + addressId);
+				if(okBtn) okBtn.style.display = 'none';
+				if(editLnk) editLnk.style.display = 'inline-block';
+				// Cân nhắc không reload nếu không cần thiết, hoặc chỉ cập nhật phần tử DOM
+				// window.location.href = /*[[@{/User/dashboard}]]*/ '/User/dashboard' + '?tab=address';
+			},
+			error: function () {
+				alert('Có lỗi xảy ra khi cập nhật địa chỉ!');
+			}
+		});
+	}
+
+	/*]]>*/
 </script>
-
-
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
-    <script src="/assets/js/jquery.waypoints.min.js"></script>
-    <script src="/assets/js/superfish.min.js"></script>
-    <script src="/assets/js/owl.carousel.min.js"></script>
-    <!-- Main JS File -->
-    <script src="/assets/js/main.js"></script>
 </body>
-
 </html>

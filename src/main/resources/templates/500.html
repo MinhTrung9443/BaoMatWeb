@@ -1,46 +1,98 @@
 <!doctype html>
-<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html class="no-js" lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"> <!-- Sửa lang="vi" nếu website là tiếng Việt -->
 
 <head>
-   <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
-    <meta name="author" content="p-themes">
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="assets/images/icons/site.html">
-    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Molla">
-    <meta name="application-name" content="Molla">
-    <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
-    <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
-    <!-- Main CSS File -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/skins/skin-demo-2.css">
-    <link rel="stylesheet" href="assets/css/demos/demo-2.css">
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <title>Lỗi Máy Chủ - Molla</title> <!-- Sửa Title -->
+ <meta name="keywords" content="HTML5 Template">
+ <meta name="description" content="Molla - Bootstrap eCommerce Template">
+ <meta name="author" content="p-themes">
+
+ <!-- Favicon - Sửa đường dẫn bằng th:href -->
+ <link rel="apple-touch-icon" sizes="180x180" th:href="@{/assets/images/icons/apple-touch-icon.png}">
+ <link rel="icon" type="image/png" sizes="32x32" th:href="@{/assets/images/icons/favicon-32x32.png}">
+ <link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/images/icons/favicon-16x16.png}">
+ <link rel="manifest" th:href="@{/assets/images/icons/site.webmanifest}"> <!-- Sửa thành site.webmanifest nếu file là vậy, hoặc site.html -->
+ <link rel="mask-icon" th:href="@{/assets/images/icons/safari-pinned-tab.svg}" color="#666666">
+ <link rel="shortcut icon" th:href="@{/assets/images/icons/favicon.ico}">
+ <meta name="apple-mobile-web-app-title" content="Molla">
+ <meta name="application-name" content="Molla">
+ <meta name="msapplication-TileColor" content="#cc9966">
+ <meta name="msapplication-config" th:href="@{/assets/images/icons/browserconfig.xml}">
+ <meta name="theme-color" content="#ffffff">
+
+ <!-- CSS Files - Sửa đường dẫn bằng th:href -->
+ <link rel="stylesheet" th:href="@{/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css}">
+ <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+ <link rel="stylesheet" th:href="@{/assets/css/plugins/owl-carousel/owl.carousel.css}">
+ <link rel="stylesheet" th:href="@{/assets/css/plugins/magnific-popup/magnific-popup.css}">
+ <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery.countdown.css}">
+ <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+ <link rel="stylesheet" th:href="@{/assets/css/skins/skin-demo-2.css}">
+ <link rel="stylesheet" th:href="@{/assets/css/demos/demo-2.css}">
+
+ <style>
+  /* CSS tùy chỉnh cho trang lỗi cho dễ nhìn hơn */
+  .error-page-content {
+   text-align: center;
+   padding: 50px 20px; /* Thêm padding */
+   min-height: 300px; /* Đảm bảo có không gian hiển thị */
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+  }
+  .error-page-content h1 {
+   font-size: 6rem; /* Giảm kích thước font một chút */
+   color: #dc3545; /* Màu đỏ cho lỗi */
+   margin-bottom: 20px;
+  }
+  .error-page-content p {
+   font-size: 1.2rem;
+   color: #333;
+   margin-bottom: 10px;
+  }
+  .error-page-content .btn-go-home {
+   margin-top: 30px;
+   padding: 12px 25px;
+   font-size: 1rem;
+  }
+ </style>
 </head>
 <body>
 <header th:replace="~{Guest/fragments/header::header}"></header>
 
-<div class="main">
-    <div class="grid wide">
-        <h1 style="font-size: 499px;">500</h1>
-    </div>
-</div>
+<main class="main"> <!-- Sử dụng thẻ <main> -->
+ <div class="container"> <!-- Sử dụng container của Bootstrap để căn giữa -->
+  <div class="error-page-content"> <!-- Div riêng cho nội dung lỗi -->
+   <h1>500</h1>
+   <h2>Oops! Đã có lỗi xảy ra.</h2>
+   <p>Rất tiếc, máy chủ của chúng tôi đã gặp phải một sự cố không mong muốn.</p>
+   <p>Chúng tôi đã được thông báo về vấn đề này và đang làm việc để khắc phục.</p>
+   <p>Vui lòng thử lại sau hoặc quay trở lại trang chủ.</p>
 
+   <!--
+   Các biến này được Spring Boot cung cấp tự động cho trang lỗi,
+   bạn có thể dùng nếu muốn, nhưng hãy cẩn thận KHÔNG hiển thị thông tin nhạy cảm.
+   Ví dụ:
+   <p th:if="${timestamp}">Thời gian: <span th:text="${#dates.format(timestamp, 'dd/MM/yyyy HH:mm:ss')}"></span></p>
+   <p th:if="${status}">Mã lỗi: <span th:text="${status}"></span></p>
+   <p th:if="${error}">Lỗi: <span th:text="${error}"></span></p>
+   <p th:if="${path}">Đường dẫn: <span th:text="${path}"></span></p>
+   Thông thường, chỉ nên hiển thị thông báo chung chung.
+   Tuyệt đối không hiển thị ${trace} hoặc ${message} (nếu server.error.include-message không phải là never)
+   -->
+
+   <a th:href="@{/}" class="btn btn-primary btn-go-home">Về Trang Chủ</a>
+  </div>
+ </div>
+</main>
 
 <footer th:replace="~{Guest/fragments/footer::footer}"></footer>
+
+<!-- Các file JS của bạn (nếu có và cần thiết cho trang lỗi) cũng cần dùng th:src="@{/path/to/js}" -->
+<!-- Ví dụ: <script th:src="@{/assets/js/jquery.min.js}"></script> -->
 </body>
+</html>
