@@ -203,6 +203,12 @@ xmlns:sec="https//www.thymeleaf.org/thymeleaf-extra-springsecurity6">
                 
       <div th:if="${order.orderStatus.name() == 'COMPLETED'}" class="container mt-4">
     <h3 class="text-center">Đánh giá.</h3>
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <span th:text="${errorMessage}"></span>
+    </div>
+    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+        <span th:text="${successMessage}"></span>
+    </div>
     <form action="/User/review" method="post" class="shadow p-4 rounded bg-light" enctype="multipart/form-data" onsubmit="return validateForm()">
         <input type="hidden" name="orderId" th:value="${order.orderId}">
         
@@ -246,6 +252,7 @@ xmlns:sec="https//www.thymeleaf.org/thymeleaf-extra-springsecurity6">
         <div class="text-center">
             <button type="submit" class="btn btn-primary px-4">Gửi đánh giá</button>
         </div>
+        
     </form>
 </div>
 
