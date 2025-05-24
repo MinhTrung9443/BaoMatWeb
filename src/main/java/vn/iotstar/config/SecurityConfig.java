@@ -4,58 +4,64 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-// import org.springframework.security.config.Customizer; // Không cần thiết
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer; // Vẫn cần import này
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.HeaderWriter;
+import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
+import org.springframework.security.web.header.writers.PermissionsPolicyHeaderWriter;
 
-import vn.iotstar.service.impl.*; // Giữ nguyên
 
+import vn.iotstar.service.impl.CustomerUserDetailsService;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
     @Autowired
-    private CustomerUserDetailsService userDetailsService; // Giữ nguyên
+    private CustomerUserDetailsService userDetailsService;
     @Autowired
-	private AuthenticationProvider authenticationProvider; // Giữ nguyên
+    private AuthenticationProvider authenticationProvider;
     @Autowired
-	private JwtAuthenticationFilter jwtAuthenticationFilter; // Giữ nguyên
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    	return http
-                .csrf(csrf -> csrf.disable()) // Giữ nguyên nếu cần
+        return http
+                .csrf(csrf -> csrf.disable()) // Cân nhắc về việc tắt CSRF nếu không có biện pháp bảo vệ khác
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/User/**").hasAnyAuthority("USER", "VENDOR") // Giữ nguyên phân quyền
+
+                        .requestMatchers("/User/**").hasAnyAuthority("USER", "VENDOR")
                         .requestMatchers("/Vendor/**").hasAnyAuthority("VENDOR")
                         .requestMatchers("/Admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/Shipper/**").hasAnyAuthority("SHIPPER")
-                        .anyRequest().permitAll()
+                        .anyRequest().permitAll() // Vẫn cho phép các request khác không cần xác thực
                 )
-                .authenticationProvider(authenticationProvider) // Giữ nguyên
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Giữ nguyên
-                // --- SỬA LỖI CẤU HÌNH HEADERS TẠI ĐÂY ---
                 .headers(headers -> headers
-                    // Cấu hình Content-Security-Policy (CSP)
-                    // Vẫn giữ nguyên cấu hình CSP và tùy chỉnh nó
-                    .contentSecurityPolicy(csp -> csp
-                    				.policyDirectives("default-src 'self'; " +
-                                            "script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; " + // Giữ lại unsafe-inline cho script
-                                            "style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline'; " +  // THÊM Google Fonts vào style-src và giữ unsafe-inline
-                                            "img-src 'self' data: https://www.portotheme.com https://media.hcdn.vn; " + // THÊM media.hcdn.vn vào img-src
-                                            "font-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com; " + // THÊM Google Fonts và Google Static Fonts vào font-src
-                                            "connect-src 'self' ws://192.168.111.10:8443 wss://192.168.111.10:8443; " + // Giữ nguyên
-                                            "frame-ancestors 'self';") // Giữ nguyên
-                          // --------------------------------------------------------
-                      )
-                      .permissionsPolicy(policy -> policy.policy("geolocation=() camera=() microphone=()")) // Giữ nguyên hoặc tùy chỉnh
-                  )
-                  .build();
-      }
+                		.contentSecurityPolicy(csp -> csp
+                                .policyDirectives("default-src 'self'; " +
+                                                  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; " + // <-- THÊM cdn.jsdelivr.net VÀO script-src
+                                                  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com http://fonts.googleapis.com https://cdnjs.cloudflare.com; " + // <-- THÊM http://fonts.googleapis.com VÀO style-src
+                                                  "img-src 'self' data: https://media.hcdn.vn; " + // Policy ảnh đã đúng từ lần trước
+"font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com http://fonts.googleapis.com;" // <-- THÊM http://fonts.googleapis.com VÀO font-src (đôi khi font css tải qua http)
+                                                  // Nếu Chart.js vẫn gây lỗi sau khi thêm cdn.jsdelivr.net, có thể nó cần 'blob:' cho data URIs
+                                                  // "img-src 'self' data: https://media.hcdn.vn blob:; " // Ví dụ thêm blob: nếu cần
+                                )
+                                // Tiếp tục sử dụng reportOnly() trong quá trình debug
+                                // .reportOnly()
+                            )
+
+                            .permissionsPolicy(pp -> pp
+                                .policy("camera=(), microphone=(), geolocation=(self), fullscreen=(self)") // Ví dụ: Chỉ cho phép geolocation từ cùng nguồn gốc, tắt camera/mic
+                            )
+                               )
+                        .authenticationProvider(authenticationProvider)
+                        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                        .build();
+            }
+
 
 }
