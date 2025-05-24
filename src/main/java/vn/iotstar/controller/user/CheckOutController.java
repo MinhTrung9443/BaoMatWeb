@@ -337,7 +337,7 @@ public class CheckOutController {
 		session.setAttribute("productId", productId);
 		String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String vnpayUrl = vnpayService.createOrder(request, product.getPrice(), "DonHang_"+order.getOrderDate(), baseUrl);
-
+        System.out.println(order.getShippingAddress());
 		return new ResponseEntity<>(vnpayUrl,HttpStatus.OK);
 	}
 }
