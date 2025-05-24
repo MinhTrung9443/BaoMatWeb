@@ -24,10 +24,6 @@ public class ImageController {
 
     @GetMapping("")
     public ResponseEntity<?> getImage(@RequestParam String imageName) {
-    	for (int i = 0;i<10;i++)
-    	{
-    		System.out.println(123123);
-    	}
 //        neu la url thi dung nhu nay
         if (imageName.startsWith("http://") || imageName.startsWith("https://")) {
             // Nếu URL hợp lệ, trả về ảnh từ URL ngoài
