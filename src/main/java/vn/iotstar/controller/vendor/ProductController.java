@@ -2,12 +2,19 @@ package vn.iotstar.controller.vendor;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,6 +55,20 @@ public class ProductController {
     @Value("${app.upload.directory}")
     private String uploadDir;
     
+    @Value("${app.upload.max-file-size:5MB}") // Configure max file size, default 5MB
+    private String maxFileSize;
+    
+    private long parseMaxFileSize(String size) {
+        size = size.toUpperCase();
+        if (size.endsWith("MB")) {
+            return Long.parseLong(size.substring(0, size.length() - 2)) * 1024 * 1024;
+        } else if (size.endsWith("KB")) {
+            return Long.parseLong(size.substring(0, size.length() - 2)) * 1024;
+        } else {
+            return Long.parseLong(size); // Assume bytes if no unit
+        }
+    }
+
     @GetMapping("")
     public String listProducts(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(required = false) String search) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("warehouseDateFirst")));
@@ -87,38 +108,168 @@ public class ProductController {
         }
         
         List<String> imageUrls = new ArrayList<>();
-        for (MultipartFile file : files) {
-            String fileName = file.getOriginalFilename();
-            File dest = new File(uploadDir + File.separator + fileName);
+        Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize(); // Normalize upload directory path
+        long maxSizeBytes = parseMaxFileSize(maxFileSize);
 
-            try {
-                file.transferTo(dest);  // Lưu file vào thư mục
-                imageUrls.add(fileName);  // Lưu tên ảnh vào danh sách
-            } catch (IOException e) {
-                model.addAttribute("errorMessage", "Lỗi khi tải ảnh lên: " + e.getMessage());
-                return "Vendor/product/create";
+        try {
+            // Ensure upload directory exists
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
             }
+            for (MultipartFile file : files) {
+                if (file.isEmpty()) {
+                    continue; // Skip empty files
+                }
+
+                // --- File Validation ---
+                // 1. Size Check
+                if (file.getSize() > maxSizeBytes) {
+                    model.addAttribute("errorMessage", "Một hoặc nhiều tệp vượt quá kích thước tối đa (" + maxFileSize + ").");
+                    // Clean up any files already uploaded in this batch (optional but good)
+                    cleanupUploadedFiles(imageUrls, uploadPath);
+                    model.addAttribute("categories", categoryService.getActiveCategories());
+                     model.addAttribute("productRequestDTO", productRequestDTO); // Keep form data
+                    return "Vendor/product/create";
+                }
+
+                // 2. Initial Type Check (MIME from browser)
+                String contentType = file.getContentType();
+                if (contentType == null || (!contentType.startsWith("image/jpeg") && !contentType.startsWith("image/png") && !contentType.startsWith("image/gif"))) {
+                     model.addAttribute("errorMessage", "Chỉ chấp nhận các tệp ảnh (JPEG, PNG, GIF). Tệp '" + file.getOriginalFilename() + "' có định dạng không hợp lệ.");
+                     cleanupUploadedFiles(imageUrls, uploadPath);
+                     model.addAttribute("categories", categoryService.getActiveCategories());
+                      model.addAttribute("productRequestDTO", productRequestDTO); // Keep form data
+                     return "Vendor/product/create";
+                }
+                // --- End File Validation ---
+
+
+                // --- Safe File Naming and Saving ---
+                String originalFilename = file.getOriginalFilename();
+                String fileExtension = FilenameUtils.getExtension(originalFilename); // Get extension safely
+                // Generate a unique filename using UUID + safe extension
+                String storedFileName = UUID.randomUUID().toString() + (fileExtension != null && !fileExtension.isEmpty() ? "." + fileExtension : "");
+
+                // Resolve the full path safely
+                Path filePath = uploadPath.resolve(storedFileName).normalize(); // Resolve and normalize final file path
+
+                 // Ensure the resolved path is still within the intended upload directory (extra safety)
+                if (!filePath.startsWith(uploadPath)) {
+                     model.addAttribute("errorMessage", "Đường dẫn tệp không hợp lệ.");
+                     cleanupUploadedFiles(imageUrls, uploadPath);
+                     model.addAttribute("categories", categoryService.getActiveCategories());
+                     model.addAttribute("productRequestDTO", productRequestDTO); // Keep form data
+                     return "Vendor/product/create";
+                }
+
+
+                try (InputStream inputStream = file.getInputStream()) {
+                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+                }
+
+                // 3. Server-side Type Probe (More reliable)
+                String probedContentType = Files.probeContentType(filePath);
+                 if (probedContentType == null || !probedContentType.startsWith("image/")) {
+                     // It's not an image file despite the extension/MIME type from the browser
+                     Files.deleteIfExists(filePath); // Delete the potentially malicious file
+                     model.addAttribute("errorMessage", "Nội dung tệp '" + file.getOriginalFilename() + "' không phải là ảnh.");
+                     cleanupUploadedFiles(imageUrls, uploadPath);
+                     model.addAttribute("categories", categoryService.getActiveCategories());
+                     model.addAttribute("productRequestDTO", productRequestDTO); // Keep form data
+                     return "Vendor/product/create";
+                 }
+                // --- End Safe File Naming and Saving ---
+
+                imageUrls.add(storedFileName); // Add the safely stored filename to the list
+
+            } // End loop over files
+
+        } catch (IOException e) {
+            System.err.println("Lỗi khi xử lý tệp tải lên: " + e.getMessage());
+            model.addAttribute("errorMessage", "Lỗi khi tải ảnh lên: " + e.getMessage());
+             model.addAttribute("categories", categoryService.getActiveCategories());
+             model.addAttribute("productRequestDTO", productRequestDTO); // Keep form data
+            return "Vendor/product/create";
         }
 
         // Gọi service để tạo sản phẩm mới
         productRequestDTO.setImageUrls(imageUrls); // Cập nhật danh sách ảnh vào ProductRequestDTO
-        productService.createProduct(productRequestDTO);
+        try {
+            productService.createProduct(productRequestDTO);
+       } catch (Exception e) {
+            System.err.println("Lỗi khi tạo sản phẩm: " + e.getMessage());
+             model.addAttribute("errorMessage", "Lỗi khi tạo sản phẩm: " + e.getMessage());
+            // Clean up uploaded files if product creation fails
+            cleanupUploadedFiles(imageUrls, uploadPath);
+             model.addAttribute("categories", categoryService.getActiveCategories());
+            model.addAttribute("productRequestDTO", productRequestDTO); // Keep form data
+            return "Vendor/product/create";
+       }
 
-        return "redirect:/Vendor/products?page=0&size=10"; // Chuyển hướng tới danh sách sản phẩm
-    }
-    @GetMapping("/uploads/{imageName}")
-    @ResponseBody
-    public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
-        File file = new File(uploadDir + File.separator + imageName);
-        if (file.exists()) {
-            Resource resource = new FileSystemResource(file);
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG)  // Hoặc MediaType khác tùy vào ảnh
-                    .body(resource);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+
+       return "redirect:/Vendor/products?page=0&size=10"; // Redirect to product list
+   }
+
+   // Helper method to clean up files uploaded in case of error
+   private void cleanupUploadedFiles(List<String> imageUrls, Path uploadPath) {
+       for (String filename : imageUrls) {
+           Path filePath = uploadPath.resolve(filename);
+           try {
+               Files.deleteIfExists(filePath);
+               System.out.println("Cleaned up file: " + filename);
+           } catch (IOException e) {
+               System.err.println("Failed to clean up file: " + filename + " - " + e.getMessage());
+           }
+       }
+   }
+
+   @GetMapping("/uploads/{imageName:.+}") // Use :.+ to allow dot in filename
+   @ResponseBody
+   public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
+       if (imageName == null || imageName.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+       }
+       try {
+           Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
+           Path requestedFilePath = uploadPath.resolve(imageName).normalize(); // Resolve safely
+
+           // Important: Check for path traversal! Ensure the requested path is within the upload directory.
+           if (!requestedFilePath.startsWith(uploadPath)) {
+                System.err.println("Attempted path traversal in getImage (Vendor): " + imageName);
+                return ResponseEntity.status(403).body(null); // Forbidden
+           }
+
+           File file = requestedFilePath.toFile();
+
+           if (file.exists() && file.isFile()) {
+               Resource resource = new FileSystemResource(file);
+               // Probe content type for security
+               String contentType = Files.probeContentType(file.toPath());
+                if (contentType == null) {
+                    contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE; // Default to safe type
+                }
+                // Optionally, check if probed type is actually an image before serving directly
+                if (!contentType.startsWith("image/")) {
+                     System.err.println("Attempted to serve non-image file as image (Vendor): " + imageName);
+                    // You might return 403 or serve as octet-stream depending on policy
+                    contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE; // Serve as binary to prevent script execution
+                }
+
+
+               return ResponseEntity.ok()
+                       .contentType(MediaType.parseMediaType(contentType))
+                       .body(resource);
+           } else {
+               return ResponseEntity.notFound().build();
+           }
+       } catch (IOException e) {
+            System.err.println("Lỗi khi truy xuất ảnh (Vendor): " + imageName + " - " + e.getMessage());
+            return ResponseEntity.status(500).body(null); // Internal Server Error
+       } catch (Exception e) {
+            System.err.println("Lỗi không xác định khi truy xuất ảnh (Vendor): " + imageName + " - " + e.getMessage());
+            return ResponseEntity.status(500).body(null); // Internal Server Error
+       }
+   }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model) {
