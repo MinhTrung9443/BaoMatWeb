@@ -30,7 +30,7 @@ public class Voucher implements Serializable{/**
 
 	private int voucherId;
 	
-	@Column( columnDefinition = "text")
+	@Column( columnDefinition = "NVARCHAR(MAX)")
 	private String voucherType;
 	
 	private String voucherCode;

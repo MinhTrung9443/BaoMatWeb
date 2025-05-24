@@ -30,7 +30,7 @@ public class Payment implements Serializable{/**
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
 	private int paymentId;
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	private String paymentMethod;
 	private LocalDateTime paymentDate;
 	private int total;

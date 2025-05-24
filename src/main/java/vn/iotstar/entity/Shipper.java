@@ -15,10 +15,10 @@ import lombok.*;
 @Table(name = "Shipper")
 public class Shipper extends Person implements Serializable {
 
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	private String address;
 	
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	private String deliveryArea;
 	
 	@ManyToOne()

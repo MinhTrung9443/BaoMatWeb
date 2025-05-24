@@ -18,9 +18,9 @@ public class Address implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int addressId;
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	private String addressDetail;
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	private String addressType;
 	
 	@ManyToOne()

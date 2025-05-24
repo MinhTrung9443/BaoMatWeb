@@ -29,17 +29,17 @@ public class Product implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int productId;
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	private String productName;
 	private int price;
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	private String description;
 	private String brand;
 	private LocalDate expirationDate;
 	private LocalDate manufactureDate;
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	private String ingredient;
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	private String instruction;
 	private String volumeOrWeight;
 	@Column(name = "brand_origin")

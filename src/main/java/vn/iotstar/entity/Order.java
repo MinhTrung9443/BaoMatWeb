@@ -40,7 +40,7 @@ public class Order implements Serializable{/**
 
 	private int orderId;
 	private LocalDateTime orderDate;
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	private String shippingAddress;
     @Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus;

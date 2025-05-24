@@ -15,7 +15,7 @@ public class Delivery implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int deliveryId;
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	private String deliveryName;
 	private int price;
 	
