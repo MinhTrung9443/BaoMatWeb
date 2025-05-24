@@ -203,7 +203,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
-
 		<!-- Optional: WebJar for STOMP.js -->
 		<dependency>
 			<groupId>org.webjars</groupId>
@@ -211,6 +210,7 @@
 			<version>2.3.3</version> <!-- or any other compatible version -->
 		</dependency>
 	</dependencies>
+
 
 	<build>
 		<plugins>
