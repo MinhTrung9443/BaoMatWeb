@@ -31,7 +31,7 @@ public class Account implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accountId;
 
-    @Column(name = "username", columnDefinition = "NVARCHAR(255) NOT NULL")
+    @Column(name = "username", columnDefinition = "text")
     private String username;
 
     private String password;
@@ -41,6 +41,6 @@ public class Account implements Serializable {
     @ManyToOne()
     @JoinColumn(name = "roleId")
     private Role role;
-    @Column(name = "token", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "token", columnDefinition = "text")
     private String token;
 }

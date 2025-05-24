@@ -1,10 +1,7 @@
 package vn.iotstar.controller.user;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -164,17 +161,28 @@ public class UserController {
 	
 	@GetMapping("/dashboard")
 	public String dashboard(HttpSession session, ModelMap model) {
+		String userEmail = null;
 		Account account = (Account) session.getAttribute("account");
 		int roleid = account.getRole().getRoleId();
 		if (roleid == 2) {
 			User customer = (User) userService.findByAccountUsername(account.getUsername());
 			session.setAttribute("user", customer);
 			model.addAttribute("user", customer);
+			userEmail = customer.getEmail();
 		} else if (roleid == 3) {
 			Vendor employee = (Vendor) userService.findByAccountUsername(account.getUsername());
 			session.setAttribute("user", employee);
 			model.addAttribute("user", employee);
+			userEmail = employee.getEmail();
 		}
+		// Mã hóa email nếu có
+		if (userEmail != null && !userEmail.isEmpty()) {
+			String encodedEmail = Base64.getEncoder().encodeToString(userEmail.getBytes(StandardCharsets.UTF_8));
+			model.addAttribute("encodedUserEmail", encodedEmail);
+		} else {
+			model.addAttribute("encodedUserEmail", ""); // Gửi chuỗi rỗng nếu không có email
+		}
+
 		
 		return "User/dashboard";
 	}

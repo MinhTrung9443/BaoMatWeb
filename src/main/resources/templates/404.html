@@ -1,46 +1,85 @@
 <!doctype html>
-<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html class="no-js" lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"> <!-- Sửa lang="vi" nếu website là tiếng Việt -->
 
 <head>
- <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
-    <meta name="author" content="p-themes">
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="assets/images/icons/site.html">
-    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Molla">
-    <meta name="application-name" content="Molla">
-    <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
-    <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
-    <!-- Main CSS File -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/skins/skin-demo-2.css">
-    <link rel="stylesheet" href="assets/css/demos/demo-2.css">
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <title>Yêu Cầu Không Hợp Lệ - Molla</title> <!-- Sửa Title cho phù hợp với lỗi 400 -->
+   <meta name="keywords" content="HTML5 Template">
+   <meta name="description" content="Molla - Bootstrap eCommerce Template">
+   <meta name="author" content="p-themes">
+
+   <!-- Favicon - Sửa đường dẫn bằng th:href -->
+   <link rel="apple-touch-icon" sizes="180x180" th:href="@{/assets/images/icons/apple-touch-icon.png}">
+   <link rel="icon" type="image/png" sizes="32x32" th:href="@{/assets/images/icons/favicon-32x32.png}">
+   <link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/images/icons/favicon-16x16.png}">
+   <link rel="manifest" th:href="@{/assets/images/icons/site.webmanifest}"> <!-- Hoặc site.html tùy file của bạn -->
+   <link rel="mask-icon" th:href="@{/assets/images/icons/safari-pinned-tab.svg}" color="#666666">
+   <link rel="shortcut icon" th:href="@{/assets/images/icons/favicon.ico}">
+   <meta name="apple-mobile-web-app-title" content="Molla">
+   <meta name="application-name" content="Molla">
+   <meta name="msapplication-TileColor" content="#cc9966">
+   <meta name="msapplication-config" th:href="@{/assets/images/icons/browserconfig.xml}">
+   <meta name="theme-color" content="#ffffff">
+
+   <!-- CSS Files - Sửa đường dẫn bằng th:href -->
+   <link rel="stylesheet" th:href="@{/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css}">
+   <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+   <link rel="stylesheet" th:href="@{/assets/css/plugins/owl-carousel/owl.carousel.css}">
+   <link rel="stylesheet" th:href="@{/assets/css/plugins/magnific-popup/magnific-popup.css}">
+   <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery.countdown.css}">
+   <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+   <link rel="stylesheet" th:href="@{/assets/css/skins/skin-demo-2.css}">
+   <link rel="stylesheet" th:href="@{/assets/css/demos/demo-2.css}">
+
+   <style>
+      .error-page-content {
+         text-align: center;
+         padding: 50px 20px;
+         min-height: 300px;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+      }
+      .error-page-content h1 {
+         font-size: 6rem;
+         color: #ffc107; /* Màu vàng cho lỗi client */
+         margin-bottom: 20px;
+      }
+      .error-page-content p {
+         font-size: 1.2rem;
+         color: #333;
+         margin-bottom: 10px;
+      }
+      .error-page-content .btn-go-home {
+         margin-top: 30px;
+         padding: 12px 25px;
+         font-size: 1rem;
+      }
+   </style>
 </head>
 <body>
 <header th:replace="~{Guest/fragments/header::header}"></header>
 
-<div class="main">
- <div class="grid wide">
-  <h1 style="font-size: 499px;">404</h1>
- </div>
-</div>
+<main class="main">
+   <div class="container">
+      <div class="error-page-content">
+         <!-- Sửa dòng này cho phù hợp với lỗi 400 -->
+         <h1>400</h1> <!-- Hoặc "Yêu Cầu Lỗi", "Bad Request" -->
+         <h2>Yêu Cầu Không Hợp Lệ</h2>
+         <p>Rất tiếc, yêu cầu của bạn không thể được máy chủ xử lý.</p>
+         <p>Điều này có thể do định dạng yêu cầu sai hoặc thiếu thông tin cần thiết.</p>
+         <p>Vui lòng kiểm tra lại yêu cầu của bạn hoặc thử lại sau.</p>
 
+         <a th:href="@{/}" class="btn btn-primary btn-go-home">Về Trang Chủ</a>
+         <!-- Hoặc bạn có thể cung cấp một nút để quay lại trang trước -->
+         <!-- <button onclick="window.history.back();" class="btn btn-secondary">Quay Lại</button> -->
+      </div>
+   </div>
+</main>
 
 <footer th:replace="~{Guest/fragments/footer::footer}"></footer>
 </body>
+</html>
