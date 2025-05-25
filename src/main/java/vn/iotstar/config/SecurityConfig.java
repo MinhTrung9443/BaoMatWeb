@@ -39,6 +39,21 @@ public class SecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .headers(headers -> headers
+                        // Thêm Permissions-Policy
+                        .addHeaderWriter((request, response) -> {
+                            String path = request.getRequestURI();
+                            if (path.startsWith("/chat/")) {
+                                // Cho phép camera và microphone cho /chat/
+                                response.setHeader("Permissions-Policy",
+                                        "geolocation=(), camera=(self), microphone=(self), fullscreen=(self), payment=(), autoplay=(), clipboard-write=()");
+                            } else {
+                                // Vô hiệu hóa các tính năng nhạy cảm cho các đường dẫn khác
+                                response.setHeader("Permissions-Policy",
+                                        "geolocation=(), camera=(), microphone=(), fullscreen=(self), payment=(), autoplay=(), clipboard-write=()");
+                            }
+                        })
+                )
                 .build();
     }
 }
