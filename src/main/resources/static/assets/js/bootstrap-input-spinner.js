@@ -205,7 +205,7 @@
             }
 
             function updateAttributes() {
-                // copy properties from original to the new input
+              
                 $input.prop("required", $original.prop("required"))
                 $input.prop("placeholder", $original.prop("placeholder"))
                 var disabled = $original.prop("disabled")
