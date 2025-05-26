@@ -21,7 +21,7 @@ public class Vendor extends Person implements Serializable{/**
 	private static final long serialVersionUID = 1L;
 	private int salary;
 	private LocalDateTime startDate;
-	@Column(columnDefinition = "nvarchar(max)")
+	@Column(columnDefinition = "NVARCHAR(MAX)")
 	
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
