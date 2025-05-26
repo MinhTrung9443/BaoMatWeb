@@ -14,35 +14,36 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import vn.iotstar.service.impl.CustomerUserDetailsService;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    
+
     @Autowired
     private CustomerUserDetailsService userDetailsService;
-    
+
     @Autowired
     private AuthenticationProvider authenticationProvider;
-    
+
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-    
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Thêm cấu hình HTTPS
                 .requiresChannel(channel -> channel
                         .anyRequest().requiresSecure())
                 .authorizeHttpRequests(auth -> auth
-
                         .requestMatchers("/User/**").hasAnyAuthority("USER", "VENDOR")
                         .requestMatchers("/Vendor/**").hasAnyAuthority("VENDOR")
                         .requestMatchers("/Admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/Shipper/**").hasAnyAuthority("SHIPPER")
-                        .anyRequest().permitAll() // Vẫn cho phép các request khác không cần xác thực
+                        .requestMatchers("/products/**", "/uploads/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/api/products/**").permitAll()
+                        .requestMatchers("/login", "/register", "/forgot-password").permitAll() // Explicitly allow public endpoints
+                        .anyRequest().authenticated() // Require authentication for all other requests
                 )
                 .headers(headers -> headers
                 		.contentSecurityPolicy(csp -> csp
@@ -91,5 +92,4 @@ public class SecurityConfig {
         });
         return factory;
     }
-
 }
