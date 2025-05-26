@@ -1,23 +1,17 @@
 package vn.iotstar.config;
 
+import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
-import org.springframework.security.web.header.HeaderWriter;
-import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
-import org.springframework.security.web.header.writers.PermissionsPolicyHeaderWriter;
-
 
 import vn.iotstar.service.impl.CustomerUserDetailsService;
 @Configuration
@@ -70,6 +64,21 @@ public class SecurityConfig {
                                )
                         .authenticationProvider(authenticationProvider)
                         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                        .headers(headers -> headers
+                        // Thêm Permissions-Policy
+                        .addHeaderWriter((request, response) -> {
+                            String path = request.getRequestURI();
+                            if (path.startsWith("/chat/")) {
+                                // Cho phép camera và microphone cho /chat/
+                                response.setHeader("Permissions-Policy",
+                                        "geolocation=(), camera=(self), microphone=(self), fullscreen=(self), payment=(), autoplay=(), clipboard-write=()");
+                            } else {
+                                // Vô hiệu hóa các tính năng nhạy cảm cho các đường dẫn khác
+                                response.setHeader("Permissions-Policy",
+                                        "geolocation=(), camera=(), microphone=(), fullscreen=(self), payment=(), autoplay=(), clipboard-write=()");
+                            }
+                        })
+                )
                         .build();
             }
     @Bean

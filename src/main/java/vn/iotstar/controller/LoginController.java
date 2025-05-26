@@ -6,14 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.Cookie;
@@ -23,10 +20,10 @@ import jakarta.servlet.http.HttpSession;
 import vn.iotstar.entity.Account;
 import vn.iotstar.entity.Person;
 import vn.iotstar.service.IAccountService;
-import vn.iotstar.service.IEmailService; // Giả sử bạn có một service gửi email
+import vn.iotstar.service.IEmailService;
 import vn.iotstar.service.IPersonService;
 import vn.iotstar.service.JwtService;
-import vn.iotstar.service.impl.UserService;
+import vn.iotstar.service.impl.UserService; // Giả sử bạn có một service gửi email
 
 @Controller
 public class LoginController {
