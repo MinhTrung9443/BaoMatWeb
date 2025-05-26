@@ -50,7 +50,7 @@ public class SecurityConfig {
                                                   "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; " + // <-- THÊM cdn.jsdelivr.net VÀO script-src
                                                   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com http://fonts.googleapis.com https://cdnjs.cloudflare.com; " + // <-- THÊM http://fonts.googleapis.com VÀO style-src
                                                   "img-src 'self' data: https://media.hcdn.vn; " + // Policy ảnh đã đúng từ lần trước
-"font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com http://fonts.googleapis.com;" // <-- THÊM http://fonts.googleapis.com VÀO font-src (đôi khi font css tải qua http)
+"font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com http://fonts.googleapis.com;" + "frame-ancestors 'none';" // <-- THÊM http://fonts.googleapis.com VÀO font-src (đôi khi font css tải qua http)
                                                   // Nếu Chart.js vẫn gây lỗi sau khi thêm cdn.jsdelivr.net, có thể nó cần 'blob:' cho data URIs
                                                   // "img-src 'self' data: https://media.hcdn.vn blob:; " // Ví dụ thêm blob: nếu cần
                                 )
