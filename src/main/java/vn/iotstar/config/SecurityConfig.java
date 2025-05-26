@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .anyRequest().requiresSecure())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/User/**").hasAnyAuthority("USER", "VENDOR")
-                        .requestMatchers("/Vendor/**").hasAnyAuthority("VENDOR")
+                        .requestMatchers("/Vendor/**","/revenue-chart","/revenue","/revenue-by-month").hasAnyAuthority("VENDOR")
                         .requestMatchers("/Admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/Shipper/**").hasAnyAuthority("SHIPPER")
                         .requestMatchers("/products/**", "/uploads/**", "/css/**", "/js/**", "/images/**","/assets/**").permitAll()
