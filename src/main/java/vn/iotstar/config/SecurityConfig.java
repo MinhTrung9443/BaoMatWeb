@@ -40,9 +40,10 @@ public class SecurityConfig {
                         .requestMatchers("/Vendor/**").hasAnyAuthority("VENDOR")
                         .requestMatchers("/Admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/Shipper/**").hasAnyAuthority("SHIPPER")
-                        .requestMatchers("/products/**", "/uploads/**", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/api/products/**").permitAll()
-                        .requestMatchers("/login", "/register", "/forgot-password").permitAll() // Explicitly allow public endpoints
+                        .requestMatchers("/products/**", "/uploads/**", "/css/**", "/js/**", "/images/**","/assets/**").permitAll()
+                        .requestMatchers("/api/auth/**","/api/products/**").permitAll()
+                        .requestMatchers("/","/login", "/register", "/forgot-password","/process-forgot-password","/verify-otp","/process-reset-password",
+                        		"/waiting","/search","/process-register", "/register-verify-otp").permitAll() // Explicitly allow public endpoints
                         .anyRequest().authenticated() // Require authentication for all other requests
                 )
                 .headers(headers -> headers
