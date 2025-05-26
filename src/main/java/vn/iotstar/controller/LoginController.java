@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger; // Thêm import
 import org.slf4j.LoggerFactory; // Thêm import
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException; // Thêm import
 import org.springframework.security.authentication.LockedException; // Thêm import
@@ -122,13 +123,16 @@ public class LoginController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String jwt = jwtService.generateToken(username);
-            Cookie jwtCookie = new Cookie("JWT_TOKEN", jwt);
-            jwtCookie.setHttpOnly(true);
-            jwtCookie.setSecure(request.isSecure()); 
-            jwtCookie.setPath("/");
-            int cookieMaxAge = "on".equals(rememberMe) ? 7 * 24 * 60 * 60 : 30 * 60; 
-            jwtCookie.setMaxAge(cookieMaxAge);
-            response.addCookie(jwtCookie);
+            ResponseCookie jwtCookie = ResponseCookie.from("JWT_TOKEN", jwt)
+                .httpOnly(true)
+                .secure(request.isSecure())
+                .path("/")
+                .maxAge("on".equals(rememberMe) ? 7 * 24 * 60 * 60 : 30 * 60)
+                .sameSite("Lax") // Thêm thuộc tính SameSite
+                .build();
+
+            // Thêm cookie vào response
+            response.addHeader("Set-Cookie", jwtCookie.toString());
 
             return "redirect:/waiting";
 
