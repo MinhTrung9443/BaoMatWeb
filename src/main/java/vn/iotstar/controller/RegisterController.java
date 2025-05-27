@@ -183,41 +183,39 @@ public class RegisterController {
 	
 	// Hàm kiểm tra độ mạnh mật khẩu
 	private String validatePassword(String password) {
-	    // Kiểm tra null hoặc rỗng
-	    if (password == null || password.trim().isEmpty()) {
-	        return "Mật khẩu không được để trống!";
-	    }
-
-	    // Kiểm tra độ dài tối thiểu
-	    if (password.length() < 8) {
-	        return "Mật khẩu phải có ít nhất 8 ký tự!";
-	    }
-
-	    // Kiểm tra khoảng trắng
-	    if (password.contains(" ")) {
-	        return "Mật khẩu không được chứa khoảng trắng!";
-	    }
-
-	    // Kiểm tra các loại ký tự
-	    String upperCaseRegex = ".*[A-Z].*";
-	    String lowerCaseRegex = ".*[a-z].*";
-	    String digitRegex = ".*\\d.*";
-	    String specialCharRegex = ".*[!@#$%^&*(),.?\":{}|<>].*";
-
-	    if (!Pattern.matches(upperCaseRegex, password)) {
-	        return "Mật khẩu phải chứa ít nhất 1 chữ cái in hoa!";
-	    }
-	    if (!Pattern.matches(lowerCaseRegex, password)) {
-	        return "Mật khẩu phải chứa ít nhất 1 chữ cái thường!";
-	    }
-	    if (!Pattern.matches(digitRegex, password)) {
-	        return "Mật khẩu phải chứa ít nhất 1 số!";
-	    }
-	    if (!Pattern.matches(specialCharRegex, password)) {
-	        return "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt (ví dụ: !@#$%)!";
-	    }
-
-	    return null; // Mật khẩu hợp lệ
+		// Kiểm tra null hoặc rỗng
+		if (password == null || password.trim().isEmpty()) {
+			return "Mật khẩu không được để trống!";
+		}
+		// Kiểm tra độ dài tối thiểu
+		if (password.length() < 8) {
+			return "Mật khẩu phải có ít nhất 8 ký tự!";
+		}
+		// Kiểm tra khoảng trắng
+		if (password.contains(" ")) {
+			return "Mật khẩu không được chứa khoảng trắng!";
+		}
+		if (password.length() >= 72) {
+			return "Mật khẩu không được vượt quá 72 ký tự!";
+		}
+		// Kiểm tra các loại ký tự
+		String upperCaseRegex = ".*[A-Z].*";
+		String lowerCaseRegex = ".*[a-z].*";
+		String digitRegex = ".*\\d.*";
+		String specialCharRegex = ".*[!@#$%^&*(),.?\":{}|<>].*";
+		if (!Pattern.matches(upperCaseRegex, password)) {
+			return "Mật khẩu phải chứa ít nhất 1 chữ cái in hoa!";
+		}
+		if (!Pattern.matches(lowerCaseRegex, password)) {
+			return "Mật khẩu phải chứa ít nhất 1 chữ cái thường!";
+		}
+		if (!Pattern.matches(digitRegex, password)) {
+			return "Mật khẩu phải chứa ít nhất 1 số!";
+		}
+		if (!Pattern.matches(specialCharRegex, password)) {
+			return "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt (ví dụ: !@#$%)!";
+		}
+		return null; // Mật khẩu hợp lệ
 	}
 
 }
